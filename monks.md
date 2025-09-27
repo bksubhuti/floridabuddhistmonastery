@@ -9,8 +9,8 @@ header:
 
 ### Resident Monks
 
-- **Bhante Subhuti** — Visiting Monk (January 10, 2026)
-- **Bhante Indriasamvaro** — Visiting Monk (January 10, 2026)
+- **Bhante Subhuti** — Visiting Monk (coming January 10, 2026)
+- **Bhante Indriyasamvaro** — Visiting Monk (coming January 10, 2026)
 - **Sayalay Dhammarati** — Previous Temporary Nun
 
 The resident monks are invited from the orthodox Theravāda commentary vinaya tradition.  That means strictly they follow the rules and guidelines laid out in the Pāḷi Theravāda root texts, commentaries and sub-commentaries as followed by the monasteries of Mahavihara or Pa-Auk in Myanmar or Wat Khao Sanamchai in Thailand. The monks are also committed to the Abhidhamma and the commentary explanations of the Buddha's teachings. 
