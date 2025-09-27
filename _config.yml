@@ -41,9 +41,10 @@ defaults:
 # Build settings
 #theme: minimal-mistakes-jekyll
 remote_theme: mmistakes/minimal-mistakes
-
 plugins:
   - jekyll-feed
+  - jekyll-include-cache
+  - jekyll-remote-theme
 
 # Exclude from processing.
 # The following items will not be processed, by default.
