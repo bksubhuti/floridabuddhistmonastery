@@ -3,7 +3,7 @@ main:
     url: /
   - title: "Committee"
     url: /committee/
-  - title: "Resident Monks"
+  - title: "Monastics"
     url: /monks/
   - title: "Activities"
     url: /activities/
