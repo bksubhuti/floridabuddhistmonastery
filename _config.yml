@@ -39,7 +39,9 @@ defaults:
       author_profile: false
 
 # Build settings
-theme: minimal-mistakes-jekyll
+#theme: minimal-mistakes-jekyll
+remote_theme: mmistakes/minimal-mistakes
+
 plugins:
   - jekyll-feed
 
