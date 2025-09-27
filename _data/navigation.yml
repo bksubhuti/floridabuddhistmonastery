@@ -1,0 +1,12 @@
+main:
+  - title: "Home"
+    url: /
+  - title: "Committee"
+    url: /committee/
+  - title: "Resident Monks"
+    url: /monks/
+  - title: "Activities"
+    url: /activities/
+  - title: "Visiting"
+    url: /visiting/
+
