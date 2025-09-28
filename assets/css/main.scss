@@ -5,3 +5,58 @@
 
 /* ✅ Correct selector */
 
+/* === Custom styles === */
+
+/* Center and size Facebook reels and other portrait videos */
+.video-container iframe {
+  display: block;
+  margin: 1.5rem auto;
+  max-width: 400px;   /* good size for portrait reels */
+  width: 100%;
+  height: 600px;      /* adjust as desired */
+  border: none;
+  border-radius: 8px; /* optional: adds soft corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); /* subtle shadow */
+}
+/* Landscape videos (like normal Facebook uploads) */
+.video-container-landscape iframe {
+  display: block;
+  max-width: 1280px;    /* slightly wider */
+  height: 540px;       /* true 16:9 ratio */
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+/* True 16:9 Facebook embeds */
+.fb-video-16x9 {
+  max-width: 960px;
+  margin: 1.5rem auto;
+  aspect-ratio: 16 / 9;       /* modern, clean */
+}
+.fb-video-16x9 iframe {
+  width: 100% !important;
+  height: 100% !important;
+  border: 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.15);
+}
+
+/* Fallback for older browsers without aspect-ratio: */
+/*
+.fb-video-16x9 {
+  position: relative;
+  max-width: 960px;
+  margin: 1.5rem auto;
+}
+.fb-video-16x9::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%;  // 9/16
+}
+.fb-video-16x9 iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+*/
