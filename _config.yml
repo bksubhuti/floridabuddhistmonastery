@@ -1,35 +1,42 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-#
-# If you need help with YAML syntax, here are some quick references for you:
-# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
-# https://learnxinyminutes.com/docs/yaml/
-#
+# --------------------------------------------------
 # Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
+# --------------------------------------------------
 
 title: Florida Buddhist Monastery
-email: your-email@example.com
-description: "A Buddhist Monastery in Geneva, Florida"
-baseurl: "" #"https://floridabuddhistmonastery.org" # the subpath of your site, e.g. /blog
-url: "https://floridabuddhistmonastery.org" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
-github_username:  jekyll
+email: Tayzawbatha851@gmail.com
+description: "A Theravāda Buddhist monastery and 501(c)(3) non-profit organization located in Geneva, Florida."
+baseurl: "" # leave empty for root of domain
+url: "https://floridabuddhistmonastery.org"
 
-# Navigation
-navigation: main
+# Optional (SEO + clarity)
+twitter_username: ""
+github_username: ""
+facebook_username: ""
+website: "https://americanmonk.org"
 
-# Theme options
+# --------------------------------------------------
+# Navigation menu
+# --------------------------------------------------
+# You can add this section directly (replaces `navigation: main`)
+
+nav:
+  - title: "Home"
+    url: /
+  - title: "Committee"
+    url: /committee/
+  - title: "Resident Monks"
+    url: /monks/
+  - title: "Activities"
+    url: /activities/
+  - title: "Visiting"
+    url: /visiting/
+  - title: "How to Find Us"
+    url: /location/
+
+# --------------------------------------------------
+# Theme settings
+# --------------------------------------------------
+
 defaults:
   - scope:
       path: ""
@@ -38,22 +45,23 @@ defaults:
       layout: single
       author_profile: false
 
-# Build settings
-#theme: minimal-mistakes-jekyll
+# --------------------------------------------------
+# Plugins and theme
+# --------------------------------------------------
+
 remote_theme: mmistakes/minimal-mistakes
+
 plugins:
   - jekyll-feed
+  - jekyll-sitemap       # ✅ helps SEO
   - jekyll-include-cache
   - jekyll-remote-theme
 
-# Exclude from processing.
-# The following items will not be processed, by default.
-# Any item listed under the `exclude:` key here will be automatically added to
-# the internal "default list".
-#
-# Excluded items can be processed by explicitly listing the directories or
-# their entries' file path in the `include:` list.
-#
+# --------------------------------------------------
+# Exclusions
+# --------------------------------------------------
+# You can safely leave this commented or as-is
+
 # exclude:
 #   - .sass-cache/
 #   - .jekyll-cache/
