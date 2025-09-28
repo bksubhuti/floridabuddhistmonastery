@@ -1,18 +1,27 @@
 ---
-layout: page
-title: About
+title: "Community"
 permalink: /about/
+layout: single
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+## 🧘‍♂️ Resident Monks
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+**Bhante Subhuti** — Visiting Monk *(coming January 10, 2026)*  
+**Ven Indriyasamvaro** — Visiting Monk *(coming January 10, 2026)*  
+**Sayalay Dhammarati** — Previous Temporary Nun
 
+<br>
 
-[jekyll-organization]: https://github.com/jekyll
+## Resident Monk Qualities
+The resident monks are invited from the **orthodox Theravāda commentary vinaya tradition** — meaning they strictly follow the rules and guidelines laid out in the Pāḷi Theravāda root texts, commentaries, and sub-commentaries as practiced in the **Mahāvihāra**, **Pa-Auk** (Myanmar), or **Wat Khao Sanamchai** (Thailand) traditions.  They are also deeply committed to the **Abhidhamma** and the commentary explanations of the Buddha’s teachings.  
+
+The monks are dedicated to preserving the Buddha’s teachings and sharing them with the community. These characteristics are what make **Tayzawbatha Vihara** unique among other Buddhist monasteries in the United States.  Although the monastery has roots in the Myanmar tradition, its vision is to welcome monks from any country who uphold these standards and can communicate in English.
+
+---
+
+## 🙏 Members of the Committee
+
+- **President:** Daniel Nay Hlaing  
+- **Vice President:** Mg Soe  
+- **Treasurer:** Ma San San
