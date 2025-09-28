@@ -7,6 +7,8 @@ header:
   overlay_filter: 0.3
 ---
 
+## Closed Until January 10, 2026
+
 ### Hours Open
 Temporarily closed: Opening January 10, 2026
 
