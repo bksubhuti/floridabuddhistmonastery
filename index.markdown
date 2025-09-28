@@ -1,6 +1,10 @@
 ---
 title: "Tayzawbatha Vihara, Inc."
 layout: single
+lang: en
+description: "Tayzawbatha Vihara, Inc. — a Theravāda Buddhist monastery and 501(c)(3) non-profit organization located in Geneva, Florida, dedicated to meditation, study, and spiritual growth."
+excerpt: "A Theravāda Buddhist monastery in Geneva, Florida — a peaceful sanctuary for meditation, study, and Dhamma practice."
+keywords: ["Florida Buddhist Monastery", "Tayzawbatha Vihara", "Theravada Buddhism", "Buddhist temple Florida", "Geneva Buddhist Monastery"]
 header:
   overlay_image: /images/monastery_banner.png
   overlay_filter: 0.3
