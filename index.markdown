@@ -1,5 +1,5 @@
 ---
-title: "Florida Buddhist Monastery (Tayzawbatha Vihara, Inc.)"
+title: "Florida Buddhist Monastery<br><small>(Tayzawbatha Vihara, Inc.)</small>"
 layout: single
 lang: en
 description: "Florida Buddhist Monastery — also known as Tayzawbatha Vihara, Inc. — a Theravāda Buddhist monastery and 501(c)(3) non-profit organization located in Geneva, Florida, dedicated to meditation, study, and spiritual growth."
