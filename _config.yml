@@ -33,9 +33,20 @@ nav:
   - title: "How to Find Us"
     url: /location/
 
+
+  
+sass:
+  sass_dir: assets/css
+  style: compressed
+
 # --------------------------------------------------
 # Theme settings
 # --------------------------------------------------
+collections:
+  news:
+    output: true
+    permalink: /news/:year/:month/:day/:title/
+
 
 defaults:
   - scope:

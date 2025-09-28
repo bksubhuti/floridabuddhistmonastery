@@ -9,4 +9,6 @@ main:
     url: /activities/
   - title: "Visiting"
     url: /visiting/
+  - title: "News"
+    url: /news/
 
