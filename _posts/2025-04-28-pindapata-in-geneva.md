@@ -1,6 +1,7 @@
 ---
 title: "Piṇḍapāta in Geneva"
 date: 2025-04-28
+show_date: true
 categories: [news]
 tags: [pindapata, geneva, facebook, video]
 layout: single

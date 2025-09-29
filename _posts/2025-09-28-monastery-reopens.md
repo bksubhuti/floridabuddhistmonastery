@@ -1,6 +1,8 @@
 ---
 title: "Monastery Reopening Announced for January 2026"
 layout: single
+date: 2025-09-28
+show_date: true
 excerpt: "Tayzawbatha Vihara will reopen on January 10, 2026, with regular meditation and Dhamma programs."
 header:
   teaser: /images/tvi_logo.png

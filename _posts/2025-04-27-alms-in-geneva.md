@@ -1,9 +1,11 @@
 ---
 title: "Alms Offering in Geneva"
 date: 2025-04-27
+show_date: true
 categories: [news]
 tags: [alms, pindapata, geneva, facebook]
 layout: single
+
 ---
 
 Beautiful moments from the **alms offering (piṇḍapāta)** in **Geneva, Florida** — a day of generosity and reverence.
