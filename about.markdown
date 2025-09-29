@@ -8,7 +8,6 @@ layout: single
 ## 🧘‍♂️ Resident Monks
 
 **Bhante Subhuti** — Visiting Monk *(coming January 10, 2026)*  
-**Ven Indriyasamvaro** — Visiting Monk *(coming January 10, 2026)*  
 **Sayalay Dhammarati** — Previous Temporary Nun
 
 <br>
