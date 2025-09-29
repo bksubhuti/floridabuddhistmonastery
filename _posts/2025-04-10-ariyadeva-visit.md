@@ -1,6 +1,7 @@
 ---
 title: "Visit of Sāmaṇera Ariyadeva"
 date: 2025-04-04
+show_date: true
 categories: [news]
 tags: [samanera, ariyadeva, visit, chanting, alms, meal]
 layout: single
