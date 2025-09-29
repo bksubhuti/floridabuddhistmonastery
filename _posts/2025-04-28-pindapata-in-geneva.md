@@ -38,7 +38,7 @@ These videos capture the peaceful atmosphere and generosity of the lay community
 
 ### 📹 Group donation on Uposatha Day
 
-<div class="video-container-landscape">
+<div class="video-container">
   <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fweb.facebook.com%2F100034926197169%2Fvideos%2Fpcb.1420777702429756%2F566112913263123%2F&show_text=false&width=560"
           width="100%" height="315" scrolling="no" frameborder="0"
           allowfullscreen="true"
