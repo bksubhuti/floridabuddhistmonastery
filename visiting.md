@@ -7,7 +7,7 @@ header:
   overlay_filter: 0.3
   overlay_logo: /images/tvi_logo.png
 ---
-
+  
 ## Closed Until January 10, 2026
 
 ### Hours Open
