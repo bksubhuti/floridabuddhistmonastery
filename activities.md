@@ -3,8 +3,9 @@ title: "Activities and Schedule"
 permalink: /activities/
 layout: single
 header:
-  overlay_image: /images/banner.webp
+  overlay_image: /images/monastery_banner.png
   overlay_filter: 0.3
+  overlay_logo: /images/tvi_logo.png
 ---
 
 ## Closed Until January 10, 2026
