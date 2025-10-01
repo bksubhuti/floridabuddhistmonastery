@@ -23,7 +23,7 @@ When open, visitors are welcome to come for morning alms offerings or to partici
 Please help maintain the peaceful atmosphere of the monastery by observing the following guidelines:
 
 - 🚺 **Female Visitors:** Women are kindly requested not to visit alone.
-- 🧍  **children:** Children under 18:** must be accompanied by a parent or guardian.
+- 🧍  **children:** Children under 18 must be accompanied by a parent or guardian.
 - 🕊️ **Clothing:** Please wear modest, white, or light-colored attire.  
 - 🤫 **Silence:** Maintain quiet within the main building and meditation areas.  
 - 🛏️ **Overnight stays:** May be available for sincere practitioners by prior arrangement.  

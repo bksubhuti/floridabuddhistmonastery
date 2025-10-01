@@ -1,18 +1,17 @@
 ---
-title: "Florida Buddhist Monastery<br><small>(Tayzawbatha Vihara, Inc.)</small>"
+title: "Florida Buddhist Monastery"
 layout: single
 lang: en
-description: "Florida Buddhist Monastery — also known as Tayzawbatha Vihara, Inc. — a Theravāda Buddhist monastery near Orlando, in Geneva, Seminole County, Florida. A 501(c)(3) non-profit dedicated to meditation, study, and spiritual growth."
-excerpt: "A Theravāda Buddhist monastery near Orlando, located in Geneva, Seminole County — a peaceful sanctuary for meditation, study, and Dhamma practice."
-keywords: ["Florida Buddhist Monastery", "Tayzawbatha Vihara", "Theravada Buddhism", "Buddhist temple Florida", "Buddhist monastery near Orlando", "Seminole County Buddhist Monastery", "Geneva Buddhist Monastery"]
+description: "Also known as Tayzawbatha Vihara, Inc. — a Theravada Buddhist monastery near Orlando, in Geneva, Seminole County, Florida. A 501(c)(3) non-profit dedicated to meditation, study, and spiritual growth."
+excerpt: "A Theravada Buddhist monastery near Orlando, located in Geneva, Seminole County — a peaceful sanctuary for meditation, study, and Dhamma practice."
+keywords: ["Florida Buddhist Monastery", "Tayzawbatha Vihara", "Theravāda", "Theravada Buddhism", "Buddhist temple Florida", "Buddhist monastery near Orlando", "Seminole County Buddhist Monastery", "Geneva Buddhist Monastery"]
 header:
   overlay_image: /images/monastery_banner.png
   overlay_filter: 0.3
   overlay_logo: /images/tvi_logo.png
 ---
 
-**Florida Buddhist Monastery (Tayzawbatha Vihara, Inc.)** is a Theravāda Buddhist monastery located in the peaceful rural community of Geneva, Florida—just northeast of Orlando, serving the Seminole County area.  
-It is legally registered and operated under **Tayzawbatha Vihara, Inc.**, a 501(c)(3) non-profit religious organization dedicated to preserving and sharing the timeless teachings of the Buddha.
+**Florida Buddhist Monastery (Tayzawbatha Vihara, Inc.)** is a Theravāda Buddhist monastery located in the peaceful rural community of Geneva, Florida—just northeast of Orlando, serving the Seminole County area.  It is legally registered and operated under **Tayzawbatha Vihara, Inc.**, a 501(c)(3) non-profit religious organization dedicated to preserving and sharing the timeless teachings of the Buddha.
 
 The monastery serves as a sanctuary for meditation, study, and spiritual growth.  Our resident bhikkhus follow the traditional monastic discipline of Theravāda Buddhism and welcome lay visitors who wish to learn and practice the Dhamma.
 
