@@ -20,7 +20,18 @@ header:
 
 Please check with the monastery for current schedules and special events.
 
+## Public Calendar
 ---
+<iframe
+  src="https://calendar.google.com/calendar/embed?src=a9990f54cc62171dfef7a892c552c8964dc1a18735784e6d8c36803ce3cffb9b%40group.calendar.google.com&ctz=Asia%2FColombo"
+  style="border: 0"
+  width="800"
+  height="600"
+  frameborder="0"
+  scrolling="no">
+</iframe>
+---
+
 
 ## Gallery
 
