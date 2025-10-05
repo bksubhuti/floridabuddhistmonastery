@@ -5,6 +5,12 @@ show_date: true
 categories: [news]
 tags: [pindapata, geneva, facebook, video]
 layout: single
+header:
+  overlay_image: /images/alms_srilanka.jpg
+  overlay_filter: 0.3
+  overlay_logo: /images/tvi_logo.png
+  teaser: /images/alms_srilanka.jpg
+
 ---
 
 Three video clips from the **piṇḍapāta (alms round)** in **Geneva, Florida** have been shared on our Facebook page.  

@@ -5,6 +5,12 @@ categories: [news]
 tags: [sayalay, ordination, dhammarati, nuns, ceremony]
 layout: single
 show_date: true
+header:
+  overlay_image: /images/now_sayalay_ordination_complete.jpg
+  overlay_filter: 0.3
+  overlay_logo: /images/tvi_logo.png
+  teaser: /images/now_sayalay_ordination_complete.jpg
+
 ---
 
 On **November 16, 2024**, **Ma Lynda** was ordained as **Sayalay Dhammarati** in a peaceful and joyful ceremony.  The event was marked by deep faith, gratitude, and devotion. Below are moments from her ordination day — from shaving her hair to receiving her robes and joining the Saṅgha.

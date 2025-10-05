@@ -5,6 +5,12 @@ show_date: true
 categories: [news]
 tags: [ordination]
 layout: single
+header:
+  overlay_image: /images/ordination_b.jpg
+  overlay_filter: 0.3
+  overlay_logo: /images/tvi_logo.png
+  teaser: /images/ordination_b.jpg
+
 
 ---
 

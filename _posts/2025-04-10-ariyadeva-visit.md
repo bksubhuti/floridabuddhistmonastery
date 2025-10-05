@@ -5,6 +5,12 @@ show_date: true
 categories: [news]
 tags: [samanera, ariyadeva, visit, chanting, alms, meal]
 layout: single
+header:
+  overlay_image: /images/ariyadeva_bow.jpg
+  overlay_filter: 0.3
+  overlay_logo: /images/tvi_logo.png
+  teaser: /images/ariyadeva_bow.jpg
+
 ---
 
 We were honored to welcome **Sāmaṇera Ariyadeva** from **Australia** on **April 4, 2025**.  

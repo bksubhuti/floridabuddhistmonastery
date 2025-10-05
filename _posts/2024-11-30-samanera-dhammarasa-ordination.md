@@ -5,6 +5,12 @@ categories: [news]
 tags: [ordination, samanera, dhammarasa, rusty jones, novice monk]
 layout: single
 show_date: true
+header:
+  overlay_image: /images/dhammarasa.jpg
+  overlay_filter: 0.3
+  overlay_logo: /images/tvi_logo.png
+  teaser: /images/dhammarasa.jpg
+
 ---
 
 **Rusty Jones** took the time to ordain as a **novice monk** (Sāmaṇera) on **November 30, 2024**.  
