@@ -5,13 +5,11 @@ show_date: true
 categories: [news]
 tags: [alms, pindapata, geneva, facebook]
 layout: single
-
 header:
   overlay_image: /images/alms_srilanka.jpg
   overlay_filter: 0.3
   overlay_logo: /images/tvi_logo.png
   teaser: /images/alms_srilanka.jpg
-
 ---
 
 Beautiful moments from the **alms offering (piṇḍapāta)** in **Geneva, Florida** — a day of generosity and reverence.
@@ -20,13 +18,8 @@ Beautiful moments from the **alms offering (piṇḍapāta)** in **Geneva, Flori
 
 ### 📸 Alms Photos
 
-<p align="center">
-  <img src="/images/alms_srilanka.jpg" alt="Alms offering photo 1"; border-radius: 8px; margin: 10px;">
-</p>
-
-<p align="center">
-  <img src="/images/alms_srilanka2.jpg" alt="Alms offering photo 2" ; border-radius: 8px; margin: 10px;">
-</p>
+  <img src="/images/alms_srilanka.jpg" alt="Alms offering photo 1">
+  <img src="/images/alms_srilanka2.jpg" alt="Alms offering photo 2">
 
 ---
 
@@ -34,7 +27,8 @@ Beautiful moments from the **alms offering (piṇḍapāta)** in **Geneva, Flori
 
 <div class="video-container">
   <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fweb.facebook.com%2Freel%2F692795643284493%2F&show_text=false&width=360"
-          width="100%" height="600" scrolling="no" frameborder="0"
+          scrolling="no"
+          frameborder="0"
           allowfullscreen="true"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
   </iframe>
