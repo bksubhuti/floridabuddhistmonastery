@@ -6,10 +6,10 @@ tags: [ordination, samanera, dhammarasa, rusty jones, novice monk]
 layout: single
 show_date: true
 header:
-  overlay_image: /images/dhammarasa.jpg
+  overlay_image: /images/dhammarasa_getting_robes.jpg
   overlay_filter: 0.3
   overlay_logo: /images/tvi_logo.png
-  teaser: /images/dhammarasa.jpg
+  teaser: /images/dhammarasa_getting_robes.jpg
 
 ---
 

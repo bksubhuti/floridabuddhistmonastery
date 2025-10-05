@@ -6,10 +6,10 @@ categories: [news]
 tags: [pindapata, geneva, facebook, video]
 layout: single
 header:
-  overlay_image: /images/alms_srilanka.jpg
+  overlay_image: /images/pindapata_vid.webp
   overlay_filter: 0.3
   overlay_logo: /images/tvi_logo.png
-  teaser: /images/alms_srilanka.jpg
+  teaser: /images/pindapata_vid.webp
 
 ---
 
