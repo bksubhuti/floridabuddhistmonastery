@@ -21,7 +21,7 @@ Here is the progression of his ordination — from receiving instructions, getti
 ### 🧘 Receiving Instructions
 
 <p align="center">
-  <img src="/images/dhammarasa_getting_instructions_layman.jpg" alt="Rusty Jones receiving instructions before ordination" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/dhammarasa_getting_instructions_layman.jpg" alt="Rusty Jones receiving instructions before ordination" >
 </p>
 
 ---
@@ -29,7 +29,7 @@ Here is the progression of his ordination — from receiving instructions, getti
 ### 🧣 Receiving Robes
 
 <p align="center">
-  <img src="/images/dhammarasa_getting_robes.jpg" alt="Rusty Jones receiving robes before ordination" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/dhammarasa_getting_robes.jpg" alt="Rusty Jones receiving robes before ordination" >
 </p>
 
 ---
@@ -38,7 +38,7 @@ Here is the progression of his ordination — from receiving instructions, getti
 
 
 <p align="center">
-  <img src="/images/dhammarasa.jpg" alt="Sāmaṇera Dhammarasa after ordination" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/dhammarasa.jpg" alt="Sāmaṇera Dhammarasa after ordination" >
 </p>
 
 ---
@@ -46,7 +46,7 @@ Here is the progression of his ordination — from receiving instructions, getti
 ### 🙏 Near the Pāṭimokkha Hall
 
 <p align="center">
-  <img src="/images/dhammarasa_near_patimokkha.jpg" alt="Sāmaṇera Dhammarasa near the Pāṭimokkha hall after ordination" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/dhammarasa_near_patimokkha.jpg" alt="Sāmaṇera Dhammarasa near the Pāṭimokkha hall after ordination" >
 </p>
 
 ---
@@ -55,7 +55,7 @@ Here is the progression of his ordination — from receiving instructions, getti
 ### 👨‍👩‍👦 With Family
 
 <p align="center">
-  <img src="/images/dhammarasa_with_family.jpg" alt="Sāmaṇera Dhammarasa with his family after ordination" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/dhammarasa_with_family.jpg" alt="Sāmaṇera Dhammarasa with his family after ordination" >
 </p>
 
 ---

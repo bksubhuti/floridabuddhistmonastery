@@ -20,9 +20,9 @@ My Guest Rev. (novice) Ariyadeva from Sri Lanka and Australia who has been here 
 ### 📸 Novice Paññārasa Photos
 
 <p align="center">
-  <img src="/images/ordination_a.jpg" alt="Ordination a" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/ordination_a.jpg" alt="Ordination a" >
 </p>
 
 <p align="center">
-  <img src="/images/ordination_b.jpg" alt="Ordination b" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/ordination_b.jpg" alt="Ordination b" >
 </p>

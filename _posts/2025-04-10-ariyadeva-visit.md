@@ -21,7 +21,7 @@ He spent the day with us, beginning with morning chanting, followed by the meal 
 ### 🙏 Bowing and Greeting
 
 <p align="center">
-  <img src="/images/ariyadeva_bow.jpg" alt="Sāmaṇera Ariyadeva bowing respectfully" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/ariyadeva_bow.jpg" alt="Sāmaṇera Ariyadeva bowing respectfully" >
 </p>
 
 ---
@@ -49,11 +49,11 @@ The day began with a peaceful chanting session among the monastics and lay suppo
 ### 🍚 Meal Offering
 
 <p align="center">
-  <img src="/images/ariyadeva_meal.jpg" alt="Sāmaṇera Ariyadeva meal offering" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/ariyadeva_meal.jpg" alt="Sāmaṇera Ariyadeva meal offering" >
 </p>
 
 <p align="center">
-  <img src="/images/ariyadeva_meal_1.jpg" alt="Supporters offering the meal" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/ariyadeva_meal_1.jpg" alt="Supporters offering the meal" >
 </p>
 
 ---
@@ -61,7 +61,7 @@ The day began with a peaceful chanting session among the monastics and lay suppo
 ### 🥣 Alms Round
 
 <p align="center">
-  <img src="/images/ariyadeva_start_alms.jpg" alt="Beginning of the alms round" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/ariyadeva_start_alms.jpg" alt="Beginning of the alms round" >
 </p>
 
 ---

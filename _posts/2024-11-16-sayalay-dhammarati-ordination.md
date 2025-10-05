@@ -28,24 +28,22 @@ The ordination of **Sayalay Dhammarati** is a meaningful event for the community
 ---
 
 ### ✂️ Shaving Ceremony
-<p align="center">
-  <img src="/images/sayalay_shaving2.jpg" alt="Hair being shaved as part of ordination" style="max-width: 600px; border-radius: 8px; margin: 10px;">
-</p>
+  <img src="/images/sayalay_shaving2.jpg" alt="Hair being shaved as part of ordination">
 
 <p align="center">
-  <img src="/images/sayalay_with_her_hair_below.jpg" alt="Ma Lynda before ordination" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/sayalay_with_her_hair_below.jpg" alt="Ma Lynda before ordination" >
 </p>
 
 ---
 
 <p align="center">
-  <img src="/images/sayalay_shaving.jpg" alt="Shaving ceremony begins" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/sayalay_shaving.jpg" alt="Shaving ceremony begins">
 </p>
 
 ### 🙏 Before the Ordination
 
 <p align="center">
-  <img src="/images/sayalay_shaved.jpg" alt="Head fully shaved after the ceremony" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/sayalay_shaved.jpg" alt="Head fully shaved after the ceremony">
 </p>
 
 ---
@@ -53,18 +51,18 @@ The ordination of **Sayalay Dhammarati** is a meaningful event for the community
 ### 🧘 Receiving the Robes
 
 <p align="center">
-  <img src="/images/sayalay_getting_robes.jpg" alt="Sayalay Dhammarati receiving her robes" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/sayalay_getting_robes.jpg" alt="Sayalay Dhammarati receiving her robes">
 </p>
 
 ---
 
 ### 🌸 Group Photos
 <p align="center">
-  <img src="/images/now_sayalay_ordination_complete.jpg" alt="Sayalay Dhammarati after ordination" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/now_sayalay_ordination_complete.jpg">
 </p>
 
 <p align="center">
-  <img src="/images/sayalay_with_bhante_and_group.jpg" alt="Sayalay Dhammarati with Bhante Subhūti and the group" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/sayalay_with_bhante_and_group.jpg" >
 </p>
 
 
