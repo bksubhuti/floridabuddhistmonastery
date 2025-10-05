@@ -29,7 +29,7 @@ Please help maintain the peaceful atmosphere of the monastery by observing the f
 - 🛏️ **Overnight stays:** May be available for sincere practitioners by prior arrangement.  
 - 🚭 **Restrictions:** Smoking, alcohol, and loud music are not permitted anywhere on the property.  
 
-Those wishing to offer food or requisites to the monks are kindly asked to arrange in advance. Contact information will be available when the monastery reopens.
+Contact information will be available when the monastery reopens.
 
 ---
 
