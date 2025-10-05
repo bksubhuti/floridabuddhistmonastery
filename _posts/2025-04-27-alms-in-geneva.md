@@ -21,11 +21,11 @@ Beautiful moments from the **alms offering (piṇḍapāta)** in **Geneva, Flori
 ### 📸 Alms Photos
 
 <p align="center">
-  <img src="/images/alms_srilanka.jpg" alt="Alms offering photo 1" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/alms_srilanka.jpg" alt="Alms offering photo 1"; border-radius: 8px; margin: 10px;">
 </p>
 
 <p align="center">
-  <img src="/images/alms_srilanka2.jpg" alt="Alms offering photo 2" style="max-width: 600px; border-radius: 8px; margin: 10px;">
+  <img src="/images/alms_srilanka2.jpg" alt="Alms offering photo 2" ; border-radius: 8px; margin: 10px;">
 </p>
 
 ---
