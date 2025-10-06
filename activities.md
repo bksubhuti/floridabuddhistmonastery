@@ -23,14 +23,36 @@ Please check with the monastery for current schedules and special events.
 ## Public Calendar
 ---
 <iframe
+  class="calendar-frame"
   src="https://calendar.google.com/calendar/embed?src=a9990f54cc62171dfef7a892c552c8964dc1a18735784e6d8c36803ce3cffb9b%40group.calendar.google.com&ctz=Asia%2FColombo"
-  style="border: 0"
-  width="800"
-  height="600"
+  style="border:0"
+  height="500"
   frameborder="0"
   scrolling="no">
 </iframe>
----
+
+<style>
+.calendar-frame {
+  width: 100%;
+  max-width: 400px; /* default for mobile */
+  display: block;
+  margin: 0 auto;
+}
+
+/* 📺 Wider layout for desktops and tablets */
+@media (min-width: 700px) {
+  .calendar-frame {
+    max-width: 500px;
+  }
+}
+
+/* 💻 Extra wide desktop screens */
+@media (min-width: 1200px) {
+  .calendar-frame {
+    max-width: 600px;
+  }
+}
+</style>
 
 
 ## Gallery
