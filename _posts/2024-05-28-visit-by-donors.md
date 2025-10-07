@@ -16,7 +16,7 @@ On **May 28, 2024**, five generous donors visited **Tayzawbatha (Florida Buddhis
 
 Their visit was filled with joy, devotion, and wholesome merit as they gathered for blessings, Dhamma discussion, and fellowship.
 
-The donor on the left is the original property donor of Pa-Auk Florida.
+The Chinese donor on the 3rd left is the original property donor of Pa-Auk Florida.
 The donor next to Bhante Subhuti is the President of TVI
 ---
 
