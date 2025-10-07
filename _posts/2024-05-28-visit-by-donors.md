@@ -25,4 +25,4 @@ The donor next to Bhante Subhuti is the President of TVI
   <img src="/images/visit_may28_2024.jpg" alt="Donors offering meal at Tayzawbatha" >
 ---
 
-May the merits of this
+May the merits of this lead to Nibbāna!
