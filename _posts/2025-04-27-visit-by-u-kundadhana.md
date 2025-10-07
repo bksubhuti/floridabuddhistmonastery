@@ -26,4 +26,20 @@ Alms Line
 Pātimokkha recitation
 <img src="/images/ukundadhana_visit_2025_3.jpg" alt="Sayadaw visit photo 3">
 
+
+## Sayadaw U Kundadhana — Dhamma Talk
+
+<div class="archive-video">
+  <iframe 
+    src="https://archive.org/embed/sayadaw_u_kundadhana" 
+    title="Sayadaw U Kundadhana — Dhamma Talk"
+    allow="autoplay; fullscreen"
+    scrolling="no"
+    frameborder="0"
+    webkitallowfullscreen="true"
+    mozallowfullscreen="true"
+    allowfullscreen>
+  </iframe>
+</div>
+
 ---
