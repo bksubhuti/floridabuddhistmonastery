@@ -6,7 +6,7 @@ categories: [news]
 tags: [sunday school, education, children, dhamma, ashin sarana]
 layout: single
 header:
-  overlay_image: /images/ashins_sarana_sunday_school_july_1_2024.jpg
+  overlay_image: /images/ashin_sarana_sunday_school_july_1_2024.jpg
   overlay_filter: 0.3
   overlay_logo: /images/tvi_logo.png
   teaser: /images/ashin_sarana_sunday_school_july_1_2024.jpg
