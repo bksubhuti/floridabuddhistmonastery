@@ -9,7 +9,7 @@ header:
   overlay_image: /images/ashins_sarana_sunday_school_july_1_2024.jpg
   overlay_filter: 0.3
   overlay_logo: /images/tvi_logo.png
-  teaser: /images/ashins_sarana_sunday_school_july_1_2024.jpg
+  teaser: /images/ashin_sarana_sunday_school_july_1_2024.jpg
 ---
 
 On **July 1, 2024**, **Venerable Ashin Sarana**, a Czech bhikkhu, conducted a **Sunday School class** for children at **Tayzawbatha (Florida Buddhist Monastery)**.  
