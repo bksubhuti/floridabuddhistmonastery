@@ -19,19 +19,7 @@ website: "https://americanmonk.org"
 # --------------------------------------------------
 # You can add this section directly (replaces `navigation: main`)
 
-nav:
-  - title: "Home"
-    url: /
-  - title: "Committee"
-    url: /committee/
-  - title: "Resident Monks"
-    url: /monks/
-  - title: "Activities"
-    url: /activities/
-  - title: "Visiting"
-    url: /visiting/
-  - title: "How to Find Us"
-    url: /location/
+
 
 
   
@@ -60,8 +48,8 @@ defaults:
 # Plugins and theme
 # --------------------------------------------------
 
-remote_theme: "mmistakes/minimal-mistakes"
-#theme: "minimal-mistakes-jekyll"
+#remote_theme: "mmistakes/minimal-mistakes"
+theme: "minimal-mistakes-jekyll"
 
 plugins:
   - jekyll-feed
