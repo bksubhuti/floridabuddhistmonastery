@@ -34,9 +34,8 @@ The role is intentionally simple so that the volunteer can keep time for persona
 
 ### Conditions and Support
 
-- **Room & Meals:** All meals and accommodation are provided at no cost.  
+- **Room & Meals:** Meals and accommodation are provided at no cost.  House has full HVAC for comfort in all seasons.  WiFi access is provided.  All other personal expenses are to be self-provided by the resident kappiya.
 - **Workload:** Light daily duties with ample time for meditation and Dhamma study.  
-- **No Stipend or Medical Coverage:** The monastery does not provide monetary compensation or health insurance.  
 - **Eligibility:**  
   - Male applicants only.  
   - Applicant must be Buddhist
@@ -44,6 +43,14 @@ The role is intentionally simple so that the volunteer can keep time for persona
   - Able to live simply in a quiet, monastic setting (possibly just one or two monks).  
 
 ---
+
+### Opportunity for Merit
+
+Supporting the comfort and well-being of monks, and helping to maintain an environment where the Vinaya can be fully observed, offers a rare opportunity to create great merit.  
+As this monastery is now **reviving after a period of dormancy**, such support carries the same merit as helping to **establish or restore** a monastery.  
+
+Moreover, living in a monastic environment allows you to make the highest kind of merit for yourself — the merit that arises through **virtue, mindfulness, and practice** — the foundation of true spiritual growth.
+
 
 ### How to Apply
 
