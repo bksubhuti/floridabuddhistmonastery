@@ -1,54 +1,54 @@
 {
-  "generatedAt": "2025-11-04T14:23:25.750Z",
+  "generatedAt": "2025-11-04T15:08:33Z",
   "events": [
     {
+      "summary": "Closed",
+      "startRaw": "2025-10-02T12:00:00Z",
+      "allDay": true
+    },
+    {
+      "summary": "Closed",
+      "startRaw": "2025-11-01T12:00:00Z",
+      "allDay": true
+    },
+    {
       "summary": "test",
-      "startRaw": "20251108T130000Z",
+      "startRaw": "2025-11-04T13:00:00Z",
       "allDay": false
     },
     {
       "summary": "test",
-      "startRaw": "20251106T010000Z",
+      "startRaw": "2025-11-06T01:00:00Z",
       "allDay": false
     },
     {
-      "summary": "Arrival and Opening",
-      "startRaw": "20260110",
+      "summary": "test 2",
+      "startRaw": "2025-11-06T13:00:00Z",
+      "allDay": false
+    },
+    {
+      "summary": "test",
+      "startRaw": "2025-11-08T13:00:00Z",
+      "allDay": false
+    },
+    {
+      "summary": "Closed",
+      "startRaw": "2025-12-01T12:00:00Z",
+      "allDay": true
+    },
+    {
+      "summary": "Closed",
+      "startRaw": "2026-01-01T12:00:00Z",
       "allDay": true
     },
     {
       "summary": "Clean Up",
-      "startRaw": "20260109",
+      "startRaw": "2026-01-09T12:00:00Z",
       "allDay": true
     },
     {
-      "summary": "Closed",
-      "startRaw": "20251002",
-      "allDay": true
-    },
-    {
-      "summary": "test 2",
-      "startRaw": "20251106T130000Z",
-      "allDay": false
-    },
-    {
-      "summary": "test",
-      "startRaw": "20251104T130000Z",
-      "allDay": false
-    },
-    {
-      "summary": "Closed",
-      "startRaw": "20251201",
-      "allDay": true
-    },
-    {
-      "summary": "Closed",
-      "startRaw": "20251101",
-      "allDay": true
-    },
-    {
-      "summary": "Closed",
-      "startRaw": "20260101",
+      "summary": "Arrival and Opening",
+      "startRaw": "2026-01-10T12:00:00Z",
       "allDay": true
     }
   ]
