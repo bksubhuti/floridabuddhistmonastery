@@ -48,14 +48,20 @@ defaults:
 # Plugins and theme
 # --------------------------------------------------
 
-remote_theme: "mmistakes/minimal-mistakes"
-#theme: "minimal-mistakes-jekyll"
+#remote_theme: "mmistakes/minimal-mistakes"
+theme: "minimal-mistakes-jekyll"
 
 plugins:
   - jekyll-feed
   - jekyll-sitemap       # ✅ helps SEO
   - jekyll-include-cache
   - jekyll-remote-theme
+
+
+atom_feed:
+  hide: true
+footer:
+  custom: true
 
 # --------------------------------------------------
 # Exclusions

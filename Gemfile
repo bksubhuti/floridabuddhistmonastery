@@ -10,6 +10,9 @@ gem "github-pages", group: :jekyll_plugins
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
   gem "jekyll-include-cache"
+  gem "jekyll"
+  gem "minimal-mistakes-jekyll"
+  gem "jekyll-remote-theme"
 end
 
 # Windows and JRuby compatibility
