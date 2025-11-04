@@ -1,0 +1,27 @@
+name: Update Events
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # every 6 hours
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Ruby deps
+        run: sudo apt-get update && sudo apt-get install -y ruby-full
+
+      - name: Generate events json
+        run: ruby scripts/generate_events.rb
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add assets/events.json
+          git diff --quiet && echo "No changes" && exit 0
+          git commit -m "update events json"
+          git push

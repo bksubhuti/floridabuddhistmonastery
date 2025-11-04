@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2025-11-04T14:23:25.750Z",
+  "events": [
+    {
+      "summary": "test",
+      "startRaw": "20251108T130000Z",
+      "allDay": false
+    },
+    {
+      "summary": "test",
+      "startRaw": "20251106T010000Z",
+      "allDay": false
+    },
+    {
+      "summary": "Arrival and Opening",
+      "startRaw": "20260110",
+      "allDay": true
+    },
+    {
+      "summary": "Clean Up",
+      "startRaw": "20260109",
+      "allDay": true
+    },
+    {
+      "summary": "Closed",
+      "startRaw": "20251002",
+      "allDay": true
+    },
+    {
+      "summary": "test 2",
+      "startRaw": "20251106T130000Z",
+      "allDay": false
+    },
+    {
+      "summary": "test",
+      "startRaw": "20251104T130000Z",
+      "allDay": false
+    },
+    {
+      "summary": "Closed",
+      "startRaw": "20251201",
+      "allDay": true
+    },
+    {
+      "summary": "Closed",
+      "startRaw": "20251101",
+      "allDay": true
+    },
+    {
+      "summary": "Closed",
+      "startRaw": "20260101",
+      "allDay": true
+    }
+  ]
+}
