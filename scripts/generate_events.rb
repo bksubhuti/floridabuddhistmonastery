@@ -43,3 +43,4 @@ File.write("assets/events.json", JSON.pretty_generate({
 }))
 
 puts "Generated assets/events.json with #{events.size} events"
+
