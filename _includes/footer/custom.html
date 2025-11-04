@@ -1,0 +1,72 @@
+<div id="upcoming-events" style="margin-top:2rem;">
+  <strong>Upcoming Events</strong>
+  <ul id="eventList"></ul>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", async function(){
+  const tz = "America/New_York";
+
+  async function getJSON() {
+    try {
+      const r = await fetch("/assets/events.json", { cache: "no-store" });
+      if (!r.ok) throw new Error("events.json missing");
+      return await r.json();
+    } catch (e) {
+      console.error(e);
+      return { events: [] };
+    }
+  }
+
+  function parseStart(e) {
+    // e.startRaw is either YYYYMMDD (all-day) or YYYYMMDDTHHMMSS(Z optional)
+    if (e.allDay) {
+      // Treat all-day as 10:00 AM ET so it has a concrete time
+      const d = e.startRaw; // YYYYMMDD
+      const yyyy = d.slice(0,4), mm = d.slice(4,6), dd = d.slice(6,8);
+      // Build a string and let Date parse in local, then convert "now" & compare in ET baseline
+      return new Date(`${yyyy}-${mm}-${dd}T10:00:00`);
+    } else {
+      // If it ends with Z, JS parses as UTC. If not, it's "floating"; most Google ICS timed use Z.
+      return new Date(e.startRaw);
+    }
+  }
+
+  function nowInET() {
+    // Normalize NOW in ET to compare consistently
+    const nowStr = new Date().toLocaleString("en-US", { timeZone: tz });
+    return new Date(nowStr);
+  }
+
+  function formatInET(date) {
+    return new Intl.DateTimeFormat('en-US', {
+      month:'short', day:'numeric', weekday:'short',
+      hour:'numeric', minute:'2-digit', timeZone: tz
+    }).format(date);
+  }
+
+  const data = await getJSON();
+  const nowET = nowInET();
+
+  const upcoming = (data.events || [])
+    .map(e => ({ ...e, start: parseStart(e) }))
+    .filter(e => e.start > nowET)
+    .sort((a,b) => a.start - b.start)
+    .slice(0,3);
+
+  const ul = document.getElementById("eventList");
+  ul.innerHTML = ""; // clear
+
+  if (upcoming.length === 0) {
+    const li = document.createElement("li");
+    li.textContent = "No upcoming events.";
+    ul.appendChild(li);
+  } else {
+    for (const e of upcoming) {
+      const li = document.createElement("li");
+      li.textContent = `${formatInET(e.start)} — ${e.summary}`;
+      ul.appendChild(li);
+    }
+  }
+});
+</script>
