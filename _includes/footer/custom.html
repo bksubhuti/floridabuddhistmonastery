@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   try {
-    const res = await fetch(jsonUrl, { cache: "no-store" });
+    const res = await fetch(`/assets/events.json?v={{ site.time | date: '%s' }}`, { cache: "no-store" });
     const data = await res.json();
     let events = data.events || [];
 
