@@ -5,15 +5,16 @@ permissions:
 
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */6 * * *"   # every 6 hours
   workflow_dispatch:
-
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Ruby deps
         run: sudo apt-get update && sudo apt-get install -y ruby-full
@@ -23,9 +24,18 @@ jobs:
 
       - name: Commit and push if changed
         run: |
+          set -e
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+
+          # Stage the file
           git add assets/events.json
-          git diff --quiet && echo "No changes" && exit 0
+
+          # Compare INDEX vs HEAD (i.e., what would be committed)
+          if git diff --cached --quiet -- assets/events.json; then
+            echo "No changes"
+            exit 0
+          fi
+
           git commit -m "update events json"
           git push
