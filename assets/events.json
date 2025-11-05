@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-11-04T15:08:33Z",
+  "generatedAt": "2025-11-05T07:21:51Z",
   "events": [
     {
       "summary": "Closed",
@@ -24,6 +24,11 @@
     {
       "summary": "test 2",
       "startRaw": "2025-11-06T13:00:00Z",
+      "allDay": false
+    },
+    {
+      "summary": "new test",
+      "startRaw": "2025-11-07T13:30:00Z",
       "allDay": false
     },
     {
