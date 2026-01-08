@@ -8,7 +8,7 @@ header:
   overlay_logo: /images/tvi_logo.png
 ---
 
-## Closed Until January 10, 2026
+## Closed Until February 5th, 2026
 
 ### Regular Activities
 

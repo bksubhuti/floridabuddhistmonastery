@@ -26,7 +26,7 @@ The monastery provides a simple and serene environment, allowing visitors to ste
 > 851 Cochran Rd, Geneva, FL 32732, USA  
 > **EIN:** 84-2973199  
 >  
-> **Currently closed — reopening January 10, 2026.**
+> **Currently closed — reopening February 5th, 2026.**
 
 ---
 

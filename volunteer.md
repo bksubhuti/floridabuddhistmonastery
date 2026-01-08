@@ -13,7 +13,7 @@ header:
 
 The Florida Buddhist Monastery (Tayzawbatha Vihara Inc.) in Geneva, Florida welcomes applications from sincere male lay practitioners who wish to offer service while maintaining their own meditation and study practice.
 
-This opportunity is open for **January 2026 onward**, when the monastery reopens.
+This opportunity is open for **February 2026 onward**, when the monastery reopens.
 
 ---
 
