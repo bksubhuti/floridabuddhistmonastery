@@ -12,7 +12,7 @@ header:
 
 ## 🧘‍♂️ Resident Monks
 
-**Bhante Subhuti** — Visiting Monk *(coming February 5th, 2026)*  
+**Bhante Subhuti** — Visiting Monk*  
 **Sayalay Dhammarati** — Previous Temporary Nun
 
 <br>

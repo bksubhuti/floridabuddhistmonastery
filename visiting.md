@@ -10,9 +10,9 @@ header:
 
 ## Visiting the Florida Buddhist Monastery
 
-### Temporarily Closed — Reopening February 5th, 2026
+### Temporarily Closed —
 
-The **Florida Buddhist Monastery (Tayzawbatha Vihara, Inc.)** in **Geneva, Seminole County**, is temporarily closed and will reopen to the public on **February 5th, 2026**.  
+The **Florida Buddhist Monastery (Tayzawbatha Vihara, Inc.)** in **Geneva, Seminole County**, is temporarily closed.  
 Located just northeast of **Orlando**, the monastery offers a quiet refuge for meditation, study, and the practice of Theravāda Buddhism.
 
 ---
