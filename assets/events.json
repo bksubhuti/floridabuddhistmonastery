@@ -1,11 +1,6 @@
 {
-  "generatedAt": "2026-03-10T01:23:18Z",
+  "generatedAt": "2026-03-10T06:39:54Z",
   "events": [
-    {
-      "summary": "Closed",
-      "startRaw": "2026-01-01T12:00:00Z",
-      "allDay": true
-    },
     {
       "summary": "Clean Up",
       "startRaw": "2026-01-09T12:00:00Z",
