@@ -1,11 +1,6 @@
 {
-  "generatedAt": "2026-03-11T01:23:23Z",
+  "generatedAt": "2026-03-11T06:43:23Z",
   "events": [
-    {
-      "summary": "Clean Up",
-      "startRaw": "2026-01-09T12:00:00Z",
-      "allDay": true
-    },
     {
       "summary": "Arrival and Opening",
       "startRaw": "2026-01-10T12:00:00Z",
