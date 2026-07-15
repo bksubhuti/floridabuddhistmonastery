@@ -10,26 +10,26 @@ header:
 
 ## Visiting the Florida Buddhist Monastery
 
-### Temporarily Closed —
+### Private Residence — Not Open to the Public
 
-The **Florida Buddhist Monastery (Tayzawbatha Vihara, Inc.)** in **Geneva, Seminole County**, is temporarily closed.  
-Located just northeast of **Orlando**, the monastery offers a quiet refuge for meditation, study, and the practice of Theravāda Buddhism.
+The **Florida Buddhist Monastery (Tayzawbatha Vihara, Inc.)** in **Geneva, Seminole County**, is a private residential dwelling for the Saṅgha.  
+Located just northeast of **Orlando**, the property serves as a quiet residence for the resident bhikkhus' meditation, study, and the practice of Theravāda Buddhism.
 
 ---
 
 ### Visiting Guidelines
 
-When open, visitors are welcome to come for morning alms offerings or to participate in meditation and Dhamma discussions.  
-Please help maintain the peaceful atmosphere of the monastery by observing the following guidelines:
+Please note that the monastery is **not open to the general public**. We do not host general public gatherings, events, or walk-in visits. 
+
+**Visits are strictly by prior appointment or invitation only.**
+
+For those who have a scheduled appointment or invitation, please help maintain the peaceful atmosphere of the residence by observing the following guidelines:
 
 - 🚺 **Female Visitors:** Women are kindly requested not to visit alone.
-- 🧍  **children:** Children under 18 must be accompanied by a parent or guardian.
+- 🧍  **Children:** Children under 18 must be accompanied by a parent or guardian.
 - 🕊️ **Clothing:** Please wear modest, white, or light-colored attire.  
 - 🤫 **Silence:** Maintain quiet within the main building and meditation areas.  
-- 🛏️ **Overnight stays:** May be available for sincere practitioners by prior arrangement.  
 - 🚭 **Restrictions:** Smoking, alcohol, and loud music are not permitted anywhere on the property.  
-
-Contact information will be available when the monastery reopens.
 
 ---
 
@@ -40,7 +40,7 @@ Contact information will be available when the monastery reopens.
 Geneva, Florida 32732  
 United States  
 
-The monastery is situated in a rural area of **Seminole County**, part of the **Greater Orlando region**. It is approximately a 40-minute drive from downtown Orlando and about 25 minutes from Sanford.
+The residence is situated in a rural area of **Seminole County**, part of the **Greater Orlando region**.
 
 ---
 

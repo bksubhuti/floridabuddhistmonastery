@@ -2,8 +2,8 @@
 title: "Florida Buddhist Monastery, TVI"
 layout: single
 lang: en
-description: "Also known as Tayzawbatha Vihara, Inc. — a Theravada Buddhist monastery near Orlando, in Geneva, Seminole County, Florida. A 501(c)(3) non-profit dedicated to meditation, study, and spiritual growth."
-excerpt: "A Theravada Buddhist monastery near Orlando, located in Geneva, Seminole County — a peaceful sanctuary for meditation, study, and Dhamma practice."
+description: "Also known as Tayzawbatha Vihara, Inc. — a private residential dwelling for Theravāda Buddhist monks near Orlando, in Geneva, Seminole County, Florida. A 501(c)(3) non-profit dedicated to preserving the Buddha's teachings."
+excerpt: "A private residential dwelling for Theravāda Buddhist monks near Orlando, located in Geneva, Seminole County — supporting the private practice, study, and Dhamma preservation of the resident Saṅgha."
 keywords: ["Florida Buddhist Monastery", "Tayzawbatha Vihara", "Theravāda", "Theravada Buddhism", "Buddhist temple Florida", "Buddhist monastery near Orlando", "Seminole County Buddhist Monastery", "Geneva Buddhist Monastery"]
 header:
   overlay_image: /images/monastery_banner.png
@@ -11,24 +11,26 @@ header:
   overlay_logo: /images/tvi_logo.png
 ---
 
-**Florida Buddhist Monastery, TVI (Tayzawbatha Vihara, Inc.)** is a Theravāda Buddhist monastery located in the peaceful rural community of Geneva, Florida—just northeast of Orlando, serving the Seminole County area.  It is legally registered and operated under **Tayzawbatha Vihara, Inc.**, a 501(c)(3) non-profit religious organization dedicated to preserving and sharing the timeless teachings of the Buddha.
+**Florida Buddhist Monastery, TVI (Tayzawbatha Vihara, Inc.)** is a private residential dwelling for the Saṅgha, located in the peaceful rural community of Geneva, Florida—just northeast of Orlando, serving the Seminole County area. It is legally registered and operated under **Tayzawbatha Vihara, Inc.**, a 501(c)(3) non-profit religious organization dedicated to preserving the timeless teachings of the Buddha.
 
-The monastery serves as a sanctuary for meditation, study, and spiritual growth.  Our resident bhikkhus follow the traditional monastic discipline of Theravāda Buddhism and welcome lay visitors who wish to learn and practice the Dhamma.
+The property serves as a quiet residence to support the private practice, meditation, and study of our resident bhikkhus (monks), who strictly follow the traditional monastic discipline of Theravāda Buddhism.
 
-The monastery provides a simple and serene environment, allowing visitors to step back from worldly distractions and cultivate the path of Dhamma.  Over the years, Tayzawbatha Vihara has also hosted temporary novice monk ordinations — including Sayalay (nuns) who dedicate their lives to Buddhist practice.  You can read more about these events and reflections on our <a href="https://americanmonk.org/sayalay-ordination/" target="_blank" rel="noopener noreferrer">ordination insights</a> and <a href="https://americanmonk.org/a-month-in-geneva-florida/" target="_blank" rel="noopener noreferrer">time in Geneva</a>.
+**Please Note:** The monastery is a private residential dwelling and is **not open to the general public**. We do not host public gatherings or events. Visits are strictly by prior appointment or invitation only.
+
+Over the years, Tayzawbatha Vihara has supported resident monastic practice—including Sayalay (nuns) who dedicate their lives to the Dhamma. You can read more about past reflections on our <a href="https://americanmonk.org/sayalay-ordination/" target="_blank" rel="noopener noreferrer">ordination insights</a> and <a href="https://americanmonk.org/a-month-in-geneva-florida/" target="_blank" rel="noopener noreferrer">time in Geneva</a>.
 
 ---
 
 ### Address & Registration
 
-> **Florida Buddhist Monastery 
-> (Tayzawbatha Vihara, Inc.)**  
+> **Florida Buddhist Monastery**  
+> **(Tayzawbatha Vihara, Inc.)**  
 > 851 Cochran Rd, Geneva, FL 32732, USA  
 >  
-> **Currently closed.**
+> **Private Residence — Not open to the general public.**
 
 ---
 
 ### Our Vision
 
-To maintain a peaceful and supportive environment for all who wish to practice the Buddha’s Dhamma.  Through the example of monastic discipline, study, and compassion, **Florida Buddhist Monastery (Tayzawbatha Vihara, Inc.)** aspires to be a living expression of Theravāda Buddhism in the modern world.
+To support the private practice, meditation, and study of the resident Saṅgha. Through the example of monastic discipline, the translation of texts, and the preservation of the Dhamma, **Tayzawbatha Vihara, Inc.** aspires to protect and uphold the timeless teachings of Theravāda Buddhism.

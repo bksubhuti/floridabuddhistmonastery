@@ -8,9 +8,11 @@ header:
   overlay_logo: /images/tvi_logo.png
 ---
 
-## Closed Until Further Notice
+## Resident Monks' Schedule
 
-### Regular Activities
+### Daily Routine
+
+The following is the general daily schedule for the resident bhikkhus:
 
 - **Morning chanting & meditation:** 5:00 AM  
 - **Breakfast:** 6:00 AM (or dawnrise)  
@@ -18,57 +20,22 @@ header:
 - **Meal offering & blessing:** 10:30 AM  
 - **Evening chanting & meditation:** 7:00 PM  
 
-Please check with the monastery for current schedules and special events.
-
-## Public Calendar
----
-<iframe
-  class="calendar-frame"
-  src="https://calendar.google.com/calendar/embed?src=a9990f54cc62171dfef7a892c552c8964dc1a18735784e6d8c36803ce3cffb9b%40group.calendar.google.com&ctz=Asia%2FColombo"
-  style="border:0"
-  height="500"
-  frameborder="0"
-  scrolling="no">
-</iframe>
-
-<style>
-.calendar-frame {
-  width: 100%;
-  max-width: 400px; /* default for mobile */
-  display: block;
-  margin: 0 auto;
-}
-
-/* 📺 Wider layout for desktops and tablets */
-@media (min-width: 700px) {
-  .calendar-frame {
-    max-width: 500px;
-  }
-}
-
-/* 💻 Extra wide desktop screens */
-@media (min-width: 1200px) {
-  .calendar-frame {
-    max-width: 600px;
-  }
-}
-</style>
-
+**Please Note:** The monastery is a private residential dwelling for the Saṅgha and is **not open to the general public**. We do not host public gatherings or events. Visits are strictly by prior appointment or invitation only.
 
 ## Gallery
 
 <div class="gallery">
   <figure>
-    <img src="/images/bhante_food_tvi.jpg" alt="Bhante getting food">
+    <img src="/images/bhante_food_tvi.jpg" alt="Bhikkhu getting food">
   </figure>
   <figure>
-    <img src="/images/bhante_alms.jpg" alt="Monks on alms round">
+    <img src="/images/bhante_alms.jpg" alt="Bhikkhus on alms round">
   </figure>
   <figure>
-    <img src="/images/monks_in_house.jpg" alt="Visitors offering food to monks">
+    <img src="/images/monks_in_house.jpg" alt="Offering food to bhikkhus">
   </figure>
   <figure>
-    <img src="/images/patimokkha-geneva.webp" alt="Meditation hall interior">
+    <img src="/images/patimokkha-geneva.webp" alt="Meditation area interior">
   </figure>
 </div>
 
