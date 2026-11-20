@@ -12,7 +12,7 @@ The alms round (piṇḍapāta) is usually **7:30 – 8:45 AM**. While the bhikk
 <div id="alms-status" class="notice--info">Loading…</div>
 <div id="alms-map" style="height:420px;border-radius:8px;margin:1em 0;"></div>
 
-Please offer respectfully and do not follow the monks. The location is shown only while the alms round is in progress. It is hidden near the monastery, which is a private residence.
+You can find the monks but please do not follow the monks. The location is shown only while the alms round is in progress. It is hidden near the monastery, which is a private residence.
 
 <script>
   window.ALMS_LIVE = {
