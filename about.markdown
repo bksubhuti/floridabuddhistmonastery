@@ -26,6 +26,5 @@ The monks are dedicated to preserving the Buddha’s teachings and sharing them 
 
 ## 🙏 Members of the Committee
 
-- **President:** Daniel Nay Hlaing  
 - **Vice President:** Mg Soe  
 - **Treasurer:** Ma San San

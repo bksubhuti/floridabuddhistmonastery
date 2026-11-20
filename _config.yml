@@ -45,6 +45,15 @@ defaults:
       author_profile: false
 
 # --------------------------------------------------
+# Live alms-round GPS map (/alms-live/)
+# Fill these in from your Firebase project (see README "Live alms map").
+# These values are safe to be public; writes are protected by Firebase rules.
+# --------------------------------------------------
+alms_live:
+  database_url: "https://fbm-alms-default-rtdb.firebaseio.com"   # e.g. https://fbm-alms-default-rtdb.firebaseio.com
+  api_key: "AIzaSyDu_EiFHovixjbgT8w0EB-vYI_UgCw-Wl4"        # Firebase Web API key (Project settings > General)
+
+# --------------------------------------------------
 # Plugins and theme
 # --------------------------------------------------
 

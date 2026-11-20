@@ -1,0 +1,66 @@
+---
+layout: null
+permalink: /alms-live/send/
+sitemap: false
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Alms GPS Sender</title>
+<style>
+  :root { --bg:#fff; --fg:#222; --muted:#666; --card:#f4f4f4; --go:#2e7d32; --stop:#c62828; --warn:#a15c00; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#111; --fg:#eee; --muted:#aaa; --card:#222; } }
+  body { margin:0; padding:16px; font:17px/1.4 -apple-system, system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+  h1 { font-size:1.3em; margin:0 0 12px; }
+  .card { background:var(--card); border-radius:12px; padding:14px; margin-bottom:14px; }
+  input { width:100%; box-sizing:border-box; font-size:17px; padding:10px; margin:4px 0 10px; border-radius:8px; border:1px solid #999; }
+  button { width:100%; font-size:20px; padding:16px; border:0; border-radius:12px; color:#fff; background:#555; margin-bottom:10px; }
+  #start { background:var(--go); } #stop { background:var(--stop); }
+  button.small { font-size:15px; padding:10px; background:#666; }
+  .muted { color:var(--muted); font-size:14px; }
+  #status { font-weight:600; }
+  .hidden { display:none; }
+</style>
+</head>
+<body>
+<h1>Alms round GPS</h1>
+
+<div id="login" class="card hidden">
+  <p>Sign in once with the Firebase sender account.</p>
+  <input id="email" type="email" placeholder="Email" autocomplete="username">
+  <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+  <button id="signin">Sign in</button>
+</div>
+
+<div id="main" class="hidden">
+  <div class="card">
+    <div id="status">Not sharing</div>
+    <div id="detail" class="muted"></div>
+  </div>
+  <button id="start">Start sharing</button>
+  <button id="stop" class="hidden">Stop sharing</button>
+
+  <div class="card">
+    <p class="muted">Keep this page open in Chrome while walking. The page keeps the screen awake. If you lock the phone or switch apps, sharing pauses until you come back to this page.</p>
+    <p class="muted"><b>Private zone:</b> <span id="zoneinfo"></span><br>
+      Inside the private zone the map shows “starting” with no location. The zone is saved only on this phone and never sent to the website.</p>
+    <button id="setzone" class="small">Set private zone at my current spot</button>
+    <button id="clearzone" class="small">Remove private zone</button>
+  </div>
+  <button id="signout" class="small">Sign out</button>
+</div>
+
+<div id="nocfg" class="card hidden">The live map is not set up yet. Fill in <code>alms_live</code> in _config.yml.</div>
+
+<script>
+  window.ALMS_LIVE = {
+    databaseUrl: {{ site.alms_live.database_url | jsonify }},
+    apiKey: {{ site.alms_live.api_key | jsonify }}
+  };
+</script>
+<script src="/assets/js/alms-send.js"></script>
+</body>
+</html>

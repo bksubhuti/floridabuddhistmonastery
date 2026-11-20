@@ -5,6 +5,8 @@ main:
     url: /about/
   - title: "Activities"
     url: /activities/
+  - title: "Live Alms"
+    url: /alms-live/
   - title: "Visiting"
     url: /visiting/
   - title: "Volunteer"

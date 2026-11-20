@@ -16,7 +16,7 @@ The following is the general daily schedule for the resident bhikkhus:
 
 - **Morning chanting & meditation:** 5:00 AM  
 - **Breakfast:** 6:00 AM (or dawnrise)  
-- **Alms round (piṇḍapāta):** 7:30 AM  
+- **Alms round (piṇḍapāta):** 7:30 – 8:45 AM ([live map](/alms-live/))  
 - **Meal offering & blessing:** 10:30 AM  
 - **Evening chanting & meditation:** 7:00 PM  
 
