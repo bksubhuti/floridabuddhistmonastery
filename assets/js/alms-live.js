@@ -45,14 +45,16 @@
   // One figure per monk (up to 5 drawn), walking in a line; feet of the first on the spot.
   // The resident monk's photo leads; guests are faceless.
   function monkIcon(n) {
-    var shown = Math.min(n, 5), w = 24, step = 14, width = w + (shown - 1) * step, html = '';
-    for (var i = shown - 1; i >= 0; i--) {
-      // first figure is the resident monk's photo; extra (guest) monks are faceless figures
-      html += '<img src="' + (i === 0 ? '/images/monk-marker.png' : '/images/monk-guest.svg') +
-        '" style="position:absolute;left:' + (i * step) + 'px;top:0;width:24px;height:66px">';
+    // Resident monk (photo) leads at full size; guests are faceless and 20% smaller.
+    var shown = Math.min(n, 5), H = 66, W = 24, gH = 53, gW = 19, gap = 4;
+    var width = W + (shown - 1) * (gW + gap), html = '';
+    for (var i = shown - 1; i >= 1; i--) {
+      html += '<img src="/images/monk-guest.svg" style="position:absolute;left:' + (W + gap + (i - 1) * (gW + gap)) +
+        'px;top:' + (H - gH) + 'px;width:' + gW + 'px;height:' + gH + 'px">';
     }
+    html += '<img src="/images/monk-marker.png" style="position:absolute;left:0;top:0;width:' + W + 'px;height:' + H + 'px">';
     if (n > shown) html += '<span class="alms-count">' + n + '</span>';
-    return L.divIcon({ className: 'monk-marker', html: html, iconSize: [width, 66], iconAnchor: [12, 65] });
+    return L.divIcon({ className: 'monk-marker', html: html, iconSize: [width, H], iconAnchor: [W / 2, H - 1] });
   }
 
   function render() {
