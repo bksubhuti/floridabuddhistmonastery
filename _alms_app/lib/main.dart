@@ -9,6 +9,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_mlkit_subject_segmentation/google_mlkit_subject_segmentation.dart';
 import 'package:http/http.dart' as http;
@@ -27,6 +28,49 @@ const defaultApiKey = 'AIzaSyDu_EiFHovixjbgT8w0EB-vYI_UgCw-Wl4';
 const defaultEmail = 'bksubhuti@gmail.com';
 
 void main() => runApp(const AlmsApp());
+
+// Head shot: take the top square of the cut-out (the face), make it a circle and
+// paint it over the head of the faceless robed figure (108x297, head centre 54,27).
+img.Image composeFace(img.Image cut, img.Image bodyPng) {
+  final body = bodyPng.convert(numChannels: 4);
+  const d = 54, cx = 54, cy = 30; // face circle on the 108x297 body
+  // Find the head: centre of the opaque pixels near the top, and its width a bit lower down.
+  int opaque(int y, bool left) {
+    for (var i = 0; i < cut.width; i++) {
+      final x = left ? i : cut.width - 1 - i;
+      if (cut.getPixel(x, y).a > 128) return x;
+    }
+    return -1;
+  }
+  final probeY = (cut.height * 0.12).round().clamp(0, cut.height - 1);
+  final l = opaque(probeY, true), rr = opaque(probeY, false);
+  final headW = (l >= 0 && rr > l) ? rr - l : cut.width;
+  final headCx = (l >= 0 && rr > l) ? (l + rr) ~/ 2 : cut.width ~/ 2;
+  final side = (headW * 1.35).round().clamp(8, cut.width < cut.height ? cut.width : cut.height);
+  final x0 = (headCx - side ~/ 2).clamp(0, cut.width - side);
+  var face = img.copyCrop(cut, x: x0, y: 0, width: side, height: side);
+  face = img.copyResize(face, width: d, height: d, interpolation: img.Interpolation.average)
+      .convert(numChannels: 4);
+  const r = d / 2;
+  for (var y = 0; y < d; y++) {
+    for (var x = 0; x < d; x++) {
+      final dx = x + 0.5 - r, dy = y + 0.5 - r;
+      if (dx * dx + dy * dy > r * r) continue;
+      final f = face.getPixel(x, y);
+      final a = f.a / 255.0;
+      if (a <= 0) continue;
+      final bx = cx - d ~/ 2 + x, by = cy - d ~/ 2 + y;
+      if (bx < 0 || by < 0 || bx >= body.width || by >= body.height) continue;
+      final b = body.getPixel(bx, by);
+      final ba = b.a / 255.0;
+      final oa = a + ba * (1 - a);
+      int mix(num fc, num bc) => ((fc * a + bc * ba * (1 - a)) / oa).round().clamp(0, 255);
+      body.setPixelRgba(bx, by, mix(f.r, b.r), mix(f.g, b.g), mix(f.b, b.b), (oa * 255).round());
+    }
+  }
+  return body;
+}
+
 
 class AlmsApp extends StatelessWidget {
   const AlmsApp({super.key});
@@ -394,9 +438,10 @@ class _HomePageState extends State<HomePage> {
   Future<void> addGuest() async {
     final nameCtl = TextEditingController();
     ImageSource? source;
+    var headShot = false;
     final name = await showDialog<String>(
       context: context,
-      builder: (c) => AlertDialog(
+      builder: (c) => StatefulBuilder(builder: (c, setD) => AlertDialog(
         title: const Text('Add guest monk'),
         content: Column(mainAxisSize: MainAxisSize.min, children: [
           TextField(
@@ -404,8 +449,17 @@ class _HomePageState extends State<HomePage> {
               autofocus: true,
               decoration: const InputDecoration(labelText: 'Name (kept on this phone only)')),
           const SizedBox(height: 12),
-          const Text('Use a full-length photo, standing, with the guest monk\'s permission. '
-              'The photo is saved and shown on the public map only when you tick him as walking.'),
+          CheckboxListTile(
+            contentPadding: EdgeInsets.zero,
+            value: headShot,
+            onChanged: (v) => setD(() => headShot = v == true),
+            title: const Text('Head shot'),
+            subtitle: Text(headShot
+                ? 'His face is put on the robed figure.'
+                : 'Full body: use a full-length standing photo.'),
+          ),
+          const Text('Only with the guest monk\'s permission. The photo is shown on the public map '
+              'only when you tick him as walking.'),
         ]),
         actions: [
           TextButton(onPressed: () => Navigator.pop(c), child: const Text('Cancel')),
@@ -422,7 +476,7 @@ class _HomePageState extends State<HomePage> {
               },
               child: const Text('Take photo')),
         ],
-      ),
+      )),
     );
     if (name == null || source == null) return;
     final shot = await ImagePicker()
@@ -452,6 +506,7 @@ class _HomePageState extends State<HomePage> {
       if (fg == null) throw Exception('No person found in the photo. Please try again.');
       var im = img.decodePng(fg)!;
       im = img.trim(im, mode: img.TrimMode.transparent);
+      if (headShot) im = await faceOnBody(im);
       if (im.height > 220) im = img.copyResize(im, height: 220, interpolation: img.Interpolation.average);
       final b64 = base64Encode(img.encodePng(im));
       final id = 'g${DateTime.now().millisecondsSinceEpoch}';
@@ -464,6 +519,13 @@ class _HomePageState extends State<HomePage> {
       await seg.close();
       if (mounted) setState(() => busyGuest = false);
     }
+  }
+
+  // Head shot: take the top square of the cut-out (the face), make it a circle
+  // and paint it over the head of the faceless robed figure.
+  Future<img.Image> faceOnBody(img.Image cut) async {
+    final data = await rootBundle.load('assets/guest_body.png');
+    return composeFace(cut, img.decodePng(data.buffer.asUint8List())!);
   }
 
   Future<void> removeGuest(Map<String, dynamic> g) async {
