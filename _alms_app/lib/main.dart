@@ -96,6 +96,24 @@ class Firebase {
         .timeout(const Duration(seconds: 20));
     if (r.statusCode != 200) throw Exception('Write failed (${r.statusCode}): ${r.body}');
   }
+
+  // Trail of points for the lotus path on the map (/alms_trail). Never written
+  // inside the private zone; erased at Start; the map hides it 3 hours after the last point.
+  Future<void> addTrail(double lat, double lng) async {
+    final tok = await _token();
+    final r = await http
+        .post(Uri.parse('$dbUrl/alms_trail.json?auth=${Uri.encodeQueryComponent(tok)}'),
+            body: jsonEncode({'lat': lat, 'lng': lng, 't': {'.sv': 'timestamp'}}))
+        .timeout(const Duration(seconds: 20));
+    if (r.statusCode != 200) throw Exception('Trail write failed (${r.statusCode}): ${r.body}');
+  }
+
+  Future<void> clearTrail() async {
+    final tok = await _token();
+    await http
+        .delete(Uri.parse('$dbUrl/alms_trail.json?auth=${Uri.encodeQueryComponent(tok)}'))
+        .timeout(const Duration(seconds: 20));
+  }
 }
 
 // ---------------- UI ----------------
@@ -139,6 +157,14 @@ class _HomePageState extends State<HomePage> {
 
   bool get sharing => sub != null;
 
+  int get monks => prefs?.getInt('monks') ?? 1;
+  Future<void> setMonks(int n) async {
+    await prefs!.setInt('monks', n.clamp(1, 20));
+    setState(() {});
+    final p = lastPos;
+    if (sharing && p != null) send(p, true); // update the map right away
+  }
+
   ({double lat, double lng})? get zone {
     final s = prefs?.getString('zone');
     if (s == null) return null;
@@ -167,6 +193,9 @@ class _HomePageState extends State<HomePage> {
   Future<void> start() async {
     if (!await ensurePermission()) return;
     setStatus('Waiting for GPS…');
+    try {
+      await fb!.clearTrail(); // fresh lotus trail for each alms round
+    } catch (_) {}
     final settings = AndroidSettings(
       accuracy: LocationAccuracy.high,
       distanceFilter: 0,
@@ -207,9 +236,10 @@ class _HomePageState extends State<HomePage> {
     final inZone = z != null &&
         Geolocator.distanceBetween(z.lat, z.lng, pos.latitude, pos.longitude) < zoneRadiusM;
     final Map<String, Object> data = inZone
-        ? {'active': true, 'hidden': true}
+        ? {'active': true, 'hidden': true, 'monks': monks}
         : {
             'active': true,
+            'monks': monks,
             'lat': double.parse(pos.latitude.toStringAsFixed(6)),
             'lng': double.parse(pos.longitude.toStringAsFixed(6)),
             'acc': pos.accuracy.round(),
@@ -219,6 +249,7 @@ class _HomePageState extends State<HomePage> {
     lastSentAt = now;
     try {
       await fb!.write(data);
+      if (!inZone) await fb!.addTrail(data['lat'] as double, data['lng'] as double);
       final n = DateTime.now();
       final t = '${n.hour}:${n.minute.toString().padLeft(2, '0')}:${n.second.toString().padLeft(2, '0')}';
       setStatus(inZone ? 'Sharing, hidden (private zone)' : 'Sharing live',
@@ -241,7 +272,7 @@ class _HomePageState extends State<HomePage> {
     lastSentAt = DateTime(2000);
     setStatus('Stopping…');
     try {
-      await fb!.write({'active': false});
+      await fb!.write({'active': false, 'monks': monks}); // lotus trail stays; map hides it after 3 hours
       setStatus('Not sharing', 'The map now shows the alms round has ended.');
     } catch (e) {
       setStatus('Could not reach server', '$e\nThe map will time out by itself.');
@@ -316,6 +347,19 @@ class _HomePageState extends State<HomePage> {
     final big = FilledButton.styleFrom(
         minimumSize: const Size.fromHeight(72), textStyle: const TextStyle(fontSize: 22));
     return [
+      Row(children: [
+        Expanded(
+            child: Text('Monks on alms round', style: Theme.of(context).textTheme.titleMedium)),
+        IconButton.outlined(
+            onPressed: monks > 1 ? () => setMonks(monks - 1) : null, icon: const Icon(Icons.remove)),
+        SizedBox(
+            width: 48,
+            child: Text('$monks',
+                textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall)),
+        IconButton.outlined(
+            onPressed: monks < 20 ? () => setMonks(monks + 1) : null, icon: const Icon(Icons.add)),
+      ]),
+      const SizedBox(height: 12),
       sharing
           ? FilledButton(
               style: big.copyWith(backgroundColor: const WidgetStatePropertyAll(Colors.red)),

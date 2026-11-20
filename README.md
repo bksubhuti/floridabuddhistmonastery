@@ -28,8 +28,20 @@ website for tayzawbatha vihara inc
          "lat":    { ".validate": "newData.isNumber()" },
          "lng":    { ".validate": "newData.isNumber()" },
          "acc":    { ".validate": "newData.isNumber()" },
+         "monks":  { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 20" },
          "t":      { ".validate": "newData.val() === now" },
          "$other": { ".validate": false }
+       },
+       "alms_trail": {
+         ".read": true,
+         ".write": "auth != null && auth.uid === 'PASTE_UID_HERE'",
+         "$id": {
+           ".validate": "newData.hasChildren(['lat', 'lng', 't'])",
+           "lat":    { ".validate": "newData.isNumber()" },
+           "lng":    { ".validate": "newData.isNumber()" },
+           "t":      { ".validate": "newData.val() === now" },
+           "$other": { ".validate": false }
+         }
        }
      }
    }

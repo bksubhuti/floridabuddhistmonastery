@@ -46,12 +46,24 @@
     });
   }
 
+  var LS_MONKS = 'almsMonks';
+  function monks() { var n = parseInt($('monks').value, 10); return n >= 1 && n <= 20 ? n : 1; }
+
   function write(data) {
     data.t = { '.sv': 'timestamp' };
+    data.monks = monks();
     return getToken().then(function (tok) {
       return fetch(DB + '?auth=' + encodeURIComponent(tok), { method: 'PUT', body: JSON.stringify(data) });
     }).then(function (r) {
       if (!r.ok) return r.text().then(function (t) { throw new Error('Write failed: ' + r.status + ' ' + t); });
+    });
+  }
+
+  // Lotus trail (/alms_trail): never written inside the private zone; erased at Start.
+  var TRAIL = DB.replace(/alms\.json$/, 'alms_trail.json');
+  function trail(method, body) {
+    return getToken().then(function (tok) {
+      return fetch(TRAIL + '?auth=' + encodeURIComponent(tok), { method: method, body: body ? JSON.stringify(body) : undefined });
     });
   }
 
@@ -95,6 +107,8 @@
       : { active: true, lat: +p.lat.toFixed(6), lng: +p.lng.toFixed(6), acc: p.acc };
     lastSent = p; lastSentAt = now;
     write(data).then(function () {
+      if (!inZone) return trail('POST', { lat: data.lat, lng: data.lng, t: { '.sv': 'timestamp' } });
+    }).then(function () {
       status(inZone ? 'Sharing, hidden (private zone)' : 'Sharing live',
         'Last sent ' + new Date().toLocaleTimeString() + ' · accuracy ±' + p.acc + ' m');
     }).catch(function (e) { status('Problem sending', e.message); lastSentAt = 0; });
@@ -103,6 +117,7 @@
   function start() {
     if (!navigator.geolocation) { status('This browser has no GPS access'); return; }
     status('Waiting for GPS…');
+    trail('DELETE').catch(function () {}); // fresh lotus trail for each alms round
     show($('start'), false); show($('stop'), true);
     watchId = navigator.geolocation.watchPosition(
       function (pos) { lastPos = pos; send(pos, false); },
@@ -142,6 +157,11 @@
     navigator.geolocation.getCurrentPosition(function (pos) {
       lsSet(LS_ZONE, JSON.stringify({ lat: pos.coords.latitude, lng: pos.coords.longitude }));
       showZone();
+  $('monks').value = lsGet(LS_MONKS) || '1';
+  $('monks').onchange = function () {
+    lsSet(LS_MONKS, String(monks()));
+    if (lastPos) send(lastPos, true); // update the map right away
+  };
     }, function (err) { alert('GPS problem: ' + err.message); }, { enableHighAccuracy: true, timeout: 30000 });
   };
   $('clearzone').onclick = function () { lsSet(LS_ZONE, null); showZone(); };

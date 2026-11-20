@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
+  <!-- white outline so lotuses show on any map colour -->
+  <g fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round">
+    <path d="M20 3 C26 10 26 20 20 27 C14 20 14 10 20 3 Z"/>
+    <path d="M3 13 C11 12 18 18 20 27 C11 28 4 22 3 13 Z"/>
+    <path d="M37 13 C29 12 22 18 20 27 C29 28 36 22 37 13 Z"/>
+  </g>
+  <!-- outer petals -->
+  <path d="M3 13 C11 12 18 18 20 27 C11 28 4 22 3 13 Z" fill="#e88aac"/>
+  <path d="M37 13 C29 12 22 18 20 27 C29 28 36 22 37 13 Z" fill="#e88aac"/>
+  <!-- middle petals -->
+  <path d="M9 8 C15 10 19 18 20 27 C13 24 9 17 9 8 Z" fill="#f2a7c3"/>
+  <path d="M31 8 C25 10 21 18 20 27 C27 24 31 17 31 8 Z" fill="#f2a7c3"/>
+  <!-- centre petal -->
+  <path d="M20 3 C26 10 26 20 20 27 C14 20 14 10 20 3 Z" fill="#f9c8da"/>
+  <path d="M20 6 C22 12 22 19 20 25" stroke="#e88aac" stroke-width="1" fill="none"/>
+  <!-- water leaf -->
+  <ellipse cx="20" cy="28.5" rx="11" ry="2.5" fill="#5a9e5a"/>
+</svg>
