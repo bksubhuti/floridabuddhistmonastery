@@ -29,8 +29,17 @@ website for tayzawbatha vihara inc
          "lng":    { ".validate": "newData.isNumber()" },
          "acc":    { ".validate": "newData.isNumber()" },
          "monks":  { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 20" },
+         "guests": { "$i": { ".validate": "newData.isString() && newData.val().length < 40" } },
          "t":      { ".validate": "newData.val() === now" },
          "$other": { ".validate": false }
+       },
+       "alms_guests": {
+         ".read": true,
+         ".write": "auth != null && auth.uid === 'PASTE_UID_HERE'",
+         "$id": {
+           "img":    { ".validate": "newData.isString() && newData.val().length < 400000 && newData.val().beginsWith('data:image/png;base64,')" },
+           "$other": { ".validate": false }
+         }
        },
        "alms_trail": {
          ".read": true,

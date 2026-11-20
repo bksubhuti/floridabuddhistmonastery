@@ -10,7 +10,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_mlkit_subject_segmentation/google_mlkit_subject_segmentation.dart';
 import 'package:http/http.dart' as http;
+import 'package:image/image.dart' as img;
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const sendEvery = Duration(seconds: 15); // at most one update per 15 s...
@@ -108,6 +111,23 @@ class Firebase {
     if (r.statusCode != 200) throw Exception('Trail write failed (${r.statusCode}): ${r.body}');
   }
 
+  // Guest monk photos (/alms_guests/<id> = {img: data URL}). Names stay on the phone.
+  Future<void> putGuest(String id, String dataUrl) async {
+    final tok = await _token();
+    final r = await http
+        .put(Uri.parse('$dbUrl/alms_guests/$id.json?auth=${Uri.encodeQueryComponent(tok)}'),
+            body: jsonEncode({'img': dataUrl}))
+        .timeout(const Duration(seconds: 30));
+    if (r.statusCode != 200) throw Exception('Photo upload failed (${r.statusCode}): ${r.body}');
+  }
+
+  Future<void> deleteGuest(String id) async {
+    final tok = await _token();
+    await http
+        .delete(Uri.parse('$dbUrl/alms_guests/$id.json?auth=${Uri.encodeQueryComponent(tok)}'))
+        .timeout(const Duration(seconds: 20));
+  }
+
   Future<void> clearTrail() async {
     final tok = await _token();
     await http
@@ -157,9 +177,34 @@ class _HomePageState extends State<HomePage> {
 
   bool get sharing => sub != null;
 
-  int get monks => prefs?.getInt('monks') ?? 1;
+  // Guest monks: [{id, name, img (base64 PNG)}] stored on this phone.
+  List<Map<String, dynamic>> get guests =>
+      (jsonDecode(prefs?.getString('guests') ?? '[]') as List).cast<Map<String, dynamic>>();
+  Future<void> saveGuests(List<Map<String, dynamic>> g) => prefs!.setString('guests', jsonEncode(g));
+  List<String> get walking => prefs?.getStringList('walking') ?? [];
+
+  // A guest's photo is online only while he is ticked as walking.
+  Future<void> setWalking(String id, bool on) async {
+    try {
+      if (on) {
+        final g = guests.firstWhere((x) => x['id'] == id);
+        await fb!.putGuest(id, 'data:image/png;base64,${g['img']}');
+      } else {
+        await fb!.deleteGuest(id);
+      }
+    } catch (e) {
+      setStatus(on ? 'Could not upload the photo' : 'Could not remove the photo online', '$e');
+      if (on) return;
+    }
+    final w = walking.where((x) => x != id).toList();
+    if (on) w.add(id);
+    await prefs!.setStringList('walking', w);
+    await setMonks(monks); // re-clamp the total and update the map
+  }
+
+  int get monks => (prefs?.getInt('monks') ?? 1).clamp(1 + walking.length, 20);
   Future<void> setMonks(int n) async {
-    await prefs!.setInt('monks', n.clamp(1, 20));
+    await prefs!.setInt('monks', n.clamp(1 + walking.length, 20));
     setState(() {});
     final p = lastPos;
     if (sharing && p != null) send(p, true); // update the map right away
@@ -236,10 +281,11 @@ class _HomePageState extends State<HomePage> {
     final inZone = z != null &&
         Geolocator.distanceBetween(z.lat, z.lng, pos.latitude, pos.longitude) < zoneRadiusM;
     final Map<String, Object> data = inZone
-        ? {'active': true, 'hidden': true, 'monks': monks}
+        ? {'active': true, 'hidden': true, 'monks': monks, 'guests': walking}
         : {
             'active': true,
             'monks': monks,
+            'guests': walking,
             'lat': double.parse(pos.latitude.toStringAsFixed(6)),
             'lng': double.parse(pos.longitude.toStringAsFixed(6)),
             'acc': pos.accuracy.round(),
@@ -343,6 +389,112 @@ class _HomePageState extends State<HomePage> {
         ),
       ];
 
+  bool busyGuest = false;
+
+  Future<void> addGuest() async {
+    final nameCtl = TextEditingController();
+    ImageSource? source;
+    final name = await showDialog<String>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: const Text('Add guest monk'),
+        content: Column(mainAxisSize: MainAxisSize.min, children: [
+          TextField(
+              controller: nameCtl,
+              autofocus: true,
+              decoration: const InputDecoration(labelText: 'Name (kept on this phone only)')),
+          const SizedBox(height: 12),
+          const Text('Use a full-length photo, standing, with the guest monk\'s permission. '
+              'The photo is saved and shown on the public map only when you tick him as walking.'),
+        ]),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(c), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () {
+                source = ImageSource.gallery;
+                Navigator.pop(c, nameCtl.text.trim());
+              },
+              child: const Text('From gallery')),
+          FilledButton(
+              onPressed: () {
+                source = ImageSource.camera;
+                Navigator.pop(c, nameCtl.text.trim());
+              },
+              child: const Text('Take photo')),
+        ],
+      ),
+    );
+    if (name == null || source == null) return;
+    final shot = await ImagePicker()
+        .pickImage(source: source!, maxWidth: 1200, maxHeight: 1600, imageQuality: 92);
+    if (shot == null) return;
+    setState(() => busyGuest = true);
+    setStatus('Cutting out the photo…');
+    final seg = SubjectSegmenter(
+        options: SubjectSegmenterOptions(
+            enableForegroundBitmap: true,
+            enableForegroundConfidenceMask: false,
+            enableMultipleSubjects:
+                SubjectResultOptions(enableConfidenceMask: false, enableSubjectBitmap: false)));
+    try {
+      final res = await seg.processImage(InputImage.fromFilePath(shot.path));
+      final fg = res.foregroundBitmap;
+      if (fg == null) throw Exception('No person found in the photo. Please try again.');
+      var im = img.decodePng(fg)!;
+      im = img.trim(im, mode: img.TrimMode.transparent);
+      if (im.height > 220) im = img.copyResize(im, height: 220, interpolation: img.Interpolation.average);
+      final b64 = base64Encode(img.encodePng(im));
+      final id = 'g${DateTime.now().millisecondsSinceEpoch}';
+      final g = guests..add({'id': id, 'name': name.isEmpty ? 'Guest monk' : name, 'img': b64});
+      await saveGuests(g);
+      setStatus(sharing ? status : 'Not sharing', 'Guest added. Tick him when he walks with you.');
+    } catch (e) {
+      setStatus('Could not add guest', '$e');
+    } finally {
+      await seg.close();
+      if (mounted) setState(() => busyGuest = false);
+    }
+  }
+
+  Future<void> removeGuest(Map<String, dynamic> g) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text('Remove ${g['name']}?'),
+        content: const Text('The photo is deleted from this phone and from the website.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(c, false), child: const Text('Cancel')),
+          FilledButton(onPressed: () => Navigator.pop(c, true), child: const Text('Remove')),
+        ],
+      ),
+    );
+    if (ok != true) return;
+    await setWalking(g['id'], false); // also removes it online
+    await saveGuests(guests.where((x) => x['id'] != g['id']).toList());
+    setState(() {});
+  }
+
+  List<Widget> guestControls() => [
+        const Divider(height: 32),
+        Text('Guest monks', style: Theme.of(context).textTheme.titleMedium),
+        const Text('Tick the guests walking today. Others in the count show as faceless figures.'),
+        for (final g in guests)
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: Image.memory(base64Decode(g['img']), height: 56, width: 24, fit: BoxFit.contain),
+            title: Text(g['name']),
+            trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+              Checkbox(
+                  value: walking.contains(g['id']), onChanged: (v) => setWalking(g['id'], v == true)),
+              IconButton(icon: const Icon(Icons.delete_outline), onPressed: () => removeGuest(g)),
+            ]),
+          ),
+        OutlinedButton.icon(
+            onPressed: busyGuest ? null : addGuest,
+            icon: const Icon(Icons.photo_camera),
+            label: Text(busyGuest ? 'Working…' : 'Add guest monk')),
+      ];
+
   List<Widget> mainControls() {
     final big = FilledButton.styleFrom(
         minimumSize: const Size.fromHeight(72), textStyle: const TextStyle(fontSize: 22));
@@ -351,7 +503,7 @@ class _HomePageState extends State<HomePage> {
         Expanded(
             child: Text('Monks on alms round', style: Theme.of(context).textTheme.titleMedium)),
         IconButton.outlined(
-            onPressed: monks > 1 ? () => setMonks(monks - 1) : null, icon: const Icon(Icons.remove)),
+            onPressed: monks > 1 + walking.length ? () => setMonks(monks - 1) : null, icon: const Icon(Icons.remove)),
         SizedBox(
             width: 48,
             child: Text('$monks',
@@ -371,6 +523,7 @@ class _HomePageState extends State<HomePage> {
               child: const Text('Start sharing')),
       const SizedBox(height: 12),
       const Text('You can lock the phone while sharing. A notification stays visible until you tap Stop.'),
+      ...guestControls(),
       const Divider(height: 32),
       Text('Private zone: ${zone == null ? 'not set' : 'set (${zoneRadiusM.round()} m radius)'}',
           style: Theme.of(context).textTheme.titleMedium),

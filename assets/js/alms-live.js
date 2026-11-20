@@ -44,13 +44,37 @@
 
   // One figure per monk (up to 5 drawn), walking in a line; feet of the first on the spot.
   // The resident monk's photo leads; guests are faceless.
-  function monkIcon(n) {
-    // Resident monk (photo) leads at full size; guests are faceless and 20% smaller.
+  // Guest photos (/alms_guests/<id>.img), online only while that guest is walking.
+  var guestImgs = {};
+  function loadGuests(ids) {
+    var missing = (ids || []).filter(function (id) { return !guestImgs[id]; });
+    if (!missing.length) return;
+    fetch(cfg.databaseUrl.replace(/\/$/, '') + '/alms_guests.json').then(function (r) { return r.json(); })
+      .then(function (d) {
+        Object.keys(d || {}).forEach(function (k) {
+          if (d[k] && /^data:image\/png;base64,/.test(d[k].img || '')) guestImgs[k] = d[k].img;
+        });
+        if (marker) marker._monks = null; // force the figures to redraw
+        render();
+      }).catch(function () {});
+  }
+
+  function guestList(s) {
+    var g = s && s.guests;
+    if (!g) return [];
+    return (Array.isArray(g) ? g : Object.keys(g).map(function (k) { return g[k]; }))
+      .filter(function (x) { return typeof x === 'string'; });
+  }
+
+  function monkIcon(n, ids) {
+    // Resident monk (photo) leads at full size; guests follow 20% smaller —
+    // with their own photo when there is one, otherwise faceless.
     var shown = Math.min(n, 5), H = 66, W = 24, gH = 53, gW = 19, gap = 4;
     var width = W + (shown - 1) * (gW + gap), html = '';
     for (var i = shown - 1; i >= 1; i--) {
-      html += '<img src="/images/monk-guest.svg" style="position:absolute;left:' + (W + gap + (i - 1) * (gW + gap)) +
-        'px;top:' + (H - gH) + 'px;width:' + gW + 'px;height:' + gH + 'px">';
+      var src = (ids && ids[i - 1] && guestImgs[ids[i - 1]]) || '/images/monk-guest.svg';
+      html += '<img src="' + src + '" style="position:absolute;left:' + (W + gap + (i - 1) * (gW + gap)) +
+        'px;top:' + (H - gH) + 'px;width:' + gW + 'px;height:' + gH + 'px;object-fit:contain;object-position:bottom">';
     }
     html += '<img src="/images/monk-marker.png" style="position:absolute;left:0;top:0;width:' + W + 'px;height:' + H + 'px">';
     if (n > shown) html += '<span class="alms-count">' + n + '</span>';
@@ -59,7 +83,9 @@
 
   function render() {
     var s = state;
-    var monks = s && s.monks > 0 ? Math.round(s.monks) : 1;
+    var ids = guestList(s);
+    var monks = Math.max(s && s.monks > 0 ? Math.round(s.monks) : 1, 1 + ids.length);
+    loadGuests(ids);
     var who = monks === 1 ? 'The monk is' : monks + ' monks are';
     var age = s && s.t ? Date.now() - s.t : Infinity;
 
@@ -81,13 +107,14 @@
     var ll = [s.lat, s.lng];
     if (!marker) {
       marker = L.marker(ll, { title: 'Bhikkhus on alms round', icon: monkIcon(1), zIndexOffset: 1000 }).addTo(map);
-      marker._monks = 1;
+      marker._monks = null;
       circle = L.circle(ll, { radius: s.acc || 30, weight: 1, fillOpacity: 0.1 }).addTo(map);
     } else {
       marker.setLatLng(ll);
       circle.setLatLng(ll).setRadius(s.acc || 30);
     }
-    if (marker._monks !== monks) { marker.setIcon(monkIcon(monks)); marker._monks = monks; }
+    var key = monks + '|' + ids.join(',') + '|' + ids.map(function (id) { return guestImgs[id] ? 1 : 0; }).join('');
+    if (marker._monks !== key) { marker.setIcon(monkIcon(monks, ids)); marker._monks = key; }
     marker.setOpacity(age > STALE_MS ? 0.5 : 1);
     if (firstFix && !trailFitted) { map.setView(ll, 16); firstFix = false; }
 

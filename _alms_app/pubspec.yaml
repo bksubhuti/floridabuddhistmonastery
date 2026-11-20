@@ -37,6 +37,9 @@ dependencies:
   geolocator: ^14.1.2
   http: ^1.6.0
   shared_preferences: ^2.5.6
+  image_picker: ^1.2.4
+  google_mlkit_subject_segmentation: ^0.3.2
+  image: ^4.13.1
 
 dev_dependencies:
   flutter_test:
