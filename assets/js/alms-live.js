@@ -61,7 +61,13 @@
 
     var ll = [s.lat, s.lng];
     if (!marker) {
-      marker = L.marker(ll, { title: 'Bhikkhus on alms round' }).addTo(map);
+      var monkIcon = L.icon({
+        iconUrl: '/images/monk-marker.png',
+        iconSize: [24, 66],      // image is ~3x for sharp phones
+        iconAnchor: [12, 65],    // feet on the spot
+        className: 'monk-marker'
+      });
+      marker = L.marker(ll, { title: 'Bhikkhus on alms round', icon: monkIcon }).addTo(map);
       circle = L.circle(ll, { radius: s.acc || 30, weight: 1, fillOpacity: 0.1 }).addTo(map);
     } else {
       marker.setLatLng(ll);

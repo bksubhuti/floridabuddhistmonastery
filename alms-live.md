@@ -7,6 +7,7 @@ layout: single
 The alms round (piṇḍapāta) is usually **7:30 – 8:45 AM**. While the bhikkhus are walking, their current location appears on the map below. It updates by itself, so you can keep this page open.
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>.monk-marker{filter:drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff) drop-shadow(0 3px 3px rgba(0,0,0,.45));}</style>
 
 <div id="alms-status" class="notice--info">Loading…</div>
 <div id="alms-map" style="height:420px;border-radius:8px;margin:1em 0;"></div>
