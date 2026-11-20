@@ -437,7 +437,17 @@ class _HomePageState extends State<HomePage> {
             enableMultipleSubjects:
                 SubjectResultOptions(enableConfidenceMask: false, enableSubjectBitmap: false)));
     try {
-      final res = await seg.processImage(InputImage.fromFilePath(shot.path));
+      // The first time, Google Play services downloads the cutout model; wait and retry.
+      SubjectSegmentationResult? res;
+      for (var attempt = 0; res == null; attempt++) {
+        try {
+          res = await seg.processImage(InputImage.fromFilePath(shot.path));
+        } catch (e) {
+          if (!'$e'.contains('to be downloaded') || attempt >= 12) rethrow;
+          setStatus('Downloading the cutout tool…', 'First time only. Please keep the app open.');
+          await Future.delayed(const Duration(seconds: 5));
+        }
+      }
       final fg = res.foregroundBitmap;
       if (fg == null) throw Exception('No person found in the photo. Please try again.');
       var im = img.decodePng(fg)!;

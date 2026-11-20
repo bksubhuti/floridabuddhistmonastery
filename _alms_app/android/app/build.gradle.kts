@@ -30,6 +30,10 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            // R8 shrinking breaks ML Kit subject segmentation (NPE in InputImage);
+            // this app is sideloaded, so size doesn't matter.
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
 }
