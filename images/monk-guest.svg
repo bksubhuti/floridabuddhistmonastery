@@ -2,10 +2,10 @@
   <!-- faceless guest monk: shaved head, maroon robe, alms bowl, bare feet -->
   <circle cx="18" cy="9" r="7" fill="#c9926a"/>
   <path d="M18 17 C9 17 6 24 5 36 L3 84 L33 84 L31 36 C30 24 27 17 18 17 Z" fill="#7a1f1f"/>
-  <path d="M27 19 C24 33 16 45 6 52 L5 64 C17 56 27 43 30 28 Z" fill="#8f2a26"/>
+  <path d="M27 19 C24 33 16 45 6 52 L5 64 C17 56 27 43 30 28 Z" fill="#7a1f1f"/>
   <path d="M6 24 C4 30 4 37 6 42 L10 42 C10 35 10 29 12 21 Z" fill="#c9926a"/>
   <path d="M9 44 Q18 38 27 44 Q26 53 18 53 Q10 53 9 44 Z" fill="#2a1a14"/>
-  <path d="M5 84 L4 91 L31 91 L31 84 Z" fill="#651818"/>
+  <path d="M5 84 L4 91 L31 91 L31 84 Z" fill="#7a1f1f"/>
   <rect x="10" y="91" width="5" height="6" rx="1.5" fill="#c9926a"/>
   <rect x="21" y="91" width="5" height="6" rx="1.5" fill="#c9926a"/>
 </svg>

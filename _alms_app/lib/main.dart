@@ -31,10 +31,10 @@ void main() => runApp(const AlmsApp());
 
 // Head shot: take the top square of the cut-out (the face), make it a circle and
 // paint it over the head of the faceless robed figure (108x297, head centre 54,27).
-img.Image composeFace(img.Image cut, img.Image bodyPng) {
-  final body = bodyPng.convert(numChannels: 4);
-  const d = 54, cx = 54, cy = 30; // face circle on the 108x297 body
-  // Find the head: centre of the opaque pixels near the top, and its width a bit lower down.
+img.Image composeFace(img.Image cut, img.Image robePng) {
+  // Head from the photo goes *behind* the robe, so the neck tucks into the
+  // neckline. The head is trimmed to a soft oval so no photo shoulders show.
+  final robe = robePng.convert(numChannels: 4);
   int opaque(int y, bool left) {
     for (var i = 0; i < cut.width; i++) {
       final x = left ? i : cut.width - 1 - i;
@@ -42,46 +42,48 @@ img.Image composeFace(img.Image cut, img.Image bodyPng) {
     }
     return -1;
   }
+
   final probeY = (cut.height * 0.12).round().clamp(0, cut.height - 1);
   final l = opaque(probeY, true), rr = opaque(probeY, false);
   final headW = (l >= 0 && rr > l) ? rr - l : cut.width;
-  final headCx = (l >= 0 && rr > l) ? (l + rr) ~/ 2 : cut.width ~/ 2;
-  final side = (headW * 1.35).round().clamp(8, cut.width < cut.height ? cut.width : cut.height);
-  final x0 = (headCx - side ~/ 2).clamp(0, cut.width - side);
-  var face = img.copyCrop(cut, x: x0, y: 0, width: side, height: side);
-  face = img.copyResize(face, width: d, height: d, interpolation: img.Interpolation.average)
-      .convert(numChannels: 4);
-  const r = d / 2;
-  for (var y = 0; y < d; y++) {
-    for (var x = 0; x < d; x++) {
-      final dx = x + 0.5 - r, dy = y + 0.5 - r;
-      if (dx * dx + dy * dy > r * r) continue;
-      final f = face.getPixel(x, y);
-      final a = f.a / 255.0;
-      if (a <= 0) continue;
-      final bx = cx - d ~/ 2 + x, by = cy - d ~/ 2 + y;
-      if (bx < 0 || by < 0 || bx >= body.width || by >= body.height) continue;
-      final b = body.getPixel(bx, by);
-      final ba = b.a / 255.0;
-      final oa = a + ba * (1 - a);
-      int mix(num fc, num bc) => ((fc * a + bc * ba * (1 - a)) / oa).round().clamp(0, 255);
-      body.setPixelRgba(bx, by, mix(f.r, b.r), mix(f.g, b.g), mix(f.b, b.b), (oa * 255).round());
+  final headCx = (l >= 0 && rr > l) ? (l + rr) / 2 : cut.width / 2;
+  const targetW = 38.0,
+      topY = 0.0,
+      cx = 54.0; // head size/place on 108x297 body
+  final s = targetW / headW;
+  // Oval around the head (in photo pixels): scalp to just below the chin.
+  final ox = headCx, oy = headW * 0.62, rx = headW * 0.56, ry = headW * 0.78;
+  final out = img.Image(width: robe.width, height: robe.height, numChannels: 4);
+  for (var y = 0; y < out.height; y++) {
+    final sy = (y - topY) / s;
+    if (sy < 0 || sy >= cut.height || sy > oy + ry) continue;
+    for (var x = 0; x < out.width; x++) {
+      final sx = (x - cx) / s + headCx;
+      if (sx < 0 || sx >= cut.width) continue;
+      final dx = (sx - ox) / rx, dy = (sy - oy) / ry;
+      final e = dx * dx + dy * dy;
+      if (e >= 1) continue;
+      final edge = e > 0.8 ? (1 - e) / 0.2 : 1.0; // feather the oval edge
+      final f = cut.getPixelInterpolate(sx, sy);
+      out.setPixelRgba(x, y, f.r, f.g, f.b, (f.a * edge).round());
     }
   }
-  return body;
+  return img.compositeImage(out, robe);
 }
-
 
 class AlmsApp extends StatelessWidget {
   const AlmsApp({super.key});
   @override
   Widget build(BuildContext context) => MaterialApp(
-        title: 'Alms GPS',
-        theme: ThemeData(colorSchemeSeed: Colors.orange, useMaterial3: true),
-        darkTheme: ThemeData(
-            colorSchemeSeed: Colors.orange, brightness: Brightness.dark, useMaterial3: true),
-        home: const HomePage(),
-      );
+    title: 'Alms GPS',
+    theme: ThemeData(colorSchemeSeed: Colors.orange, useMaterial3: true),
+    darkTheme: ThemeData(
+      colorSchemeSeed: Colors.orange,
+      brightness: Brightness.dark,
+      useMaterial3: true,
+    ),
+    home: const HomePage(),
+  );
 }
 
 // ---------------- Firebase (REST) ----------------
@@ -92,23 +94,36 @@ class Firebase {
   String? _idToken;
   DateTime _exp = DateTime(2000);
 
-  String get dbUrl => (prefs.getString('dbUrl') ?? '').replaceAll(RegExp(r'/+$'), '');
+  String get dbUrl =>
+      (prefs.getString('dbUrl') ?? '').replaceAll(RegExp(r'/+$'), '');
   String get apiKey => prefs.getString('apiKey') ?? '';
   bool get signedIn => (prefs.getString('refreshToken') ?? '').isNotEmpty;
 
-  Future<void> signIn(String dbUrl, String apiKey, String email, String password) async {
+  Future<void> signIn(
+    String dbUrl,
+    String apiKey,
+    String email,
+    String password,
+  ) async {
     await prefs.setString('dbUrl', dbUrl.trim());
     await prefs.setString('apiKey', apiKey.trim());
     final r = await http.post(
       Uri.parse(
-          'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this.apiKey}'),
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this.apiKey}',
+      ),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email.trim(), 'password': password, 'returnSecureToken': true}),
+      body: jsonEncode({
+        'email': email.trim(),
+        'password': password,
+        'returnSecureToken': true,
+      }),
     );
     final d = jsonDecode(r.body);
     if (d['error'] != null) throw Exception(d['error']['message']);
     _idToken = d['idToken'];
-    _exp = DateTime.now().add(Duration(seconds: int.parse(d['expiresIn']) - 120));
+    _exp = DateTime.now().add(
+      Duration(seconds: int.parse(d['expiresIn']) - 120),
+    );
     await prefs.setString('refreshToken', d['refreshToken']);
   }
 
@@ -124,12 +139,16 @@ class Firebase {
     final r = await http.post(
       Uri.parse('https://securetoken.googleapis.com/v1/token?key=$apiKey'),
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: 'grant_type=refresh_token&refresh_token=${Uri.encodeQueryComponent(rt)}',
+      body:
+          'grant_type=refresh_token&refresh_token=${Uri.encodeQueryComponent(rt)}',
     );
     final d = jsonDecode(r.body);
-    if (d['error'] != null) throw Exception('Sign-in expired, please sign in again');
+    if (d['error'] != null)
+      throw Exception('Sign-in expired, please sign in again');
     _idToken = d['id_token'];
-    _exp = DateTime.now().add(Duration(seconds: int.parse(d['expires_in']) - 120));
+    _exp = DateTime.now().add(
+      Duration(seconds: int.parse(d['expires_in']) - 120),
+    );
     await prefs.setString('refreshToken', d['refresh_token']);
     return _idToken!;
   }
@@ -138,10 +157,13 @@ class Firebase {
     data['t'] = {'.sv': 'timestamp'};
     final tok = await _token();
     final r = await http
-        .put(Uri.parse('$dbUrl/alms.json?auth=${Uri.encodeQueryComponent(tok)}'),
-            body: jsonEncode(data))
+        .put(
+          Uri.parse('$dbUrl/alms.json?auth=${Uri.encodeQueryComponent(tok)}'),
+          body: jsonEncode(data),
+        )
         .timeout(const Duration(seconds: 20));
-    if (r.statusCode != 200) throw Exception('Write failed (${r.statusCode}): ${r.body}');
+    if (r.statusCode != 200)
+      throw Exception('Write failed (${r.statusCode}): ${r.body}');
   }
 
   // Trail of points for the lotus path on the map (/alms_trail). Never written
@@ -149,33 +171,55 @@ class Firebase {
   Future<void> addTrail(double lat, double lng) async {
     final tok = await _token();
     final r = await http
-        .post(Uri.parse('$dbUrl/alms_trail.json?auth=${Uri.encodeQueryComponent(tok)}'),
-            body: jsonEncode({'lat': lat, 'lng': lng, 't': {'.sv': 'timestamp'}}))
+        .post(
+          Uri.parse(
+            '$dbUrl/alms_trail.json?auth=${Uri.encodeQueryComponent(tok)}',
+          ),
+          body: jsonEncode({
+            'lat': lat,
+            'lng': lng,
+            't': {'.sv': 'timestamp'},
+          }),
+        )
         .timeout(const Duration(seconds: 20));
-    if (r.statusCode != 200) throw Exception('Trail write failed (${r.statusCode}): ${r.body}');
+    if (r.statusCode != 200)
+      throw Exception('Trail write failed (${r.statusCode}): ${r.body}');
   }
 
   // Guest monk photos (/alms_guests/<id> = {img: data URL}). Names stay on the phone.
   Future<void> putGuest(String id, String dataUrl) async {
     final tok = await _token();
     final r = await http
-        .put(Uri.parse('$dbUrl/alms_guests/$id.json?auth=${Uri.encodeQueryComponent(tok)}'),
-            body: jsonEncode({'img': dataUrl}))
+        .put(
+          Uri.parse(
+            '$dbUrl/alms_guests/$id.json?auth=${Uri.encodeQueryComponent(tok)}',
+          ),
+          body: jsonEncode({'img': dataUrl}),
+        )
         .timeout(const Duration(seconds: 30));
-    if (r.statusCode != 200) throw Exception('Photo upload failed (${r.statusCode}): ${r.body}');
+    if (r.statusCode != 200)
+      throw Exception('Photo upload failed (${r.statusCode}): ${r.body}');
   }
 
   Future<void> deleteGuest(String id) async {
     final tok = await _token();
     await http
-        .delete(Uri.parse('$dbUrl/alms_guests/$id.json?auth=${Uri.encodeQueryComponent(tok)}'))
+        .delete(
+          Uri.parse(
+            '$dbUrl/alms_guests/$id.json?auth=${Uri.encodeQueryComponent(tok)}',
+          ),
+        )
         .timeout(const Duration(seconds: 20));
   }
 
   Future<void> clearTrail() async {
     final tok = await _token();
     await http
-        .delete(Uri.parse('$dbUrl/alms_trail.json?auth=${Uri.encodeQueryComponent(tok)}'))
+        .delete(
+          Uri.parse(
+            '$dbUrl/alms_trail.json?auth=${Uri.encodeQueryComponent(tok)}',
+          ),
+        )
         .timeout(const Duration(seconds: 20));
   }
 }
@@ -210,34 +254,41 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    SharedPreferences.getInstance().then((p) => setState(() {
-          prefs = p;
-          fb = Firebase(p);
-          dbCtl.text = p.getString('dbUrl') ?? defaultDbUrl;
-          keyCtl.text = p.getString('apiKey') ?? defaultApiKey;
-          emailCtl.text = defaultEmail;
-        }));
+    SharedPreferences.getInstance().then(
+      (p) => setState(() {
+        prefs = p;
+        fb = Firebase(p);
+        dbCtl.text = p.getString('dbUrl') ?? defaultDbUrl;
+        keyCtl.text = p.getString('apiKey') ?? defaultApiKey;
+        emailCtl.text = defaultEmail;
+      }),
+    );
   }
 
   bool get sharing => sub != null;
 
   // Guest monks: [{id, name, img (base64 PNG)}] stored on this phone.
   List<Map<String, dynamic>> get guests =>
-      (jsonDecode(prefs?.getString('guests') ?? '[]') as List).cast<Map<String, dynamic>>();
-  Future<void> saveGuests(List<Map<String, dynamic>> g) => prefs!.setString('guests', jsonEncode(g));
+      (jsonDecode(prefs?.getString('guests') ?? '[]') as List)
+          .cast<Map<String, dynamic>>();
+  Future<void> saveGuests(List<Map<String, dynamic>> g) =>
+      prefs!.setString('guests', jsonEncode(g));
   List<String> get walking => prefs?.getStringList('walking') ?? [];
 
   // A guest's photo is online only while he is ticked as walking.
   Future<void> setWalking(String id, bool on) async {
     try {
-      if (on) {
-        final g = guests.firstWhere((x) => x['id'] == id);
+      final g = guests.firstWhere((x) => x['id'] == id, orElse: () => {});
+      if (on && g['img'] != null) {
         await fb!.putGuest(id, 'data:image/png;base64,${g['img']}');
-      } else {
+      } else if (!on) {
         await fb!.deleteGuest(id);
       }
     } catch (e) {
-      setStatus(on ? 'Could not upload the photo' : 'Could not remove the photo online', '$e');
+      setStatus(
+        on ? 'Could not upload the photo' : 'Could not remove the photo online',
+        '$e',
+      );
       if (on) return;
     }
     final w = walking.where((x) => x != id).toList();
@@ -258,22 +309,37 @@ class _HomePageState extends State<HomePage> {
     final s = prefs?.getString('zone');
     if (s == null) return null;
     final m = jsonDecode(s);
-    return (lat: (m['lat'] as num).toDouble(), lng: (m['lng'] as num).toDouble());
+    return (
+      lat: (m['lat'] as num).toDouble(),
+      lng: (m['lng'] as num).toDouble(),
+    );
   }
 
   void setStatus(String s, [String d = '']) {
-    if (mounted) setState(() { status = s; detail = d; });
+    if (mounted)
+      setState(() {
+        status = s;
+        detail = d;
+      });
   }
 
   Future<bool> ensurePermission() async {
     if (!await Geolocator.isLocationServiceEnabled()) {
-      setStatus('Location is turned off', 'Turn on Location in Android settings.');
+      setStatus(
+        'Location is turned off',
+        'Turn on Location in Android settings.',
+      );
       return false;
     }
     var p = await Geolocator.checkPermission();
-    if (p == LocationPermission.denied) p = await Geolocator.requestPermission();
-    if (p == LocationPermission.denied || p == LocationPermission.deniedForever) {
-      setStatus('Location permission denied', 'Allow location for Alms GPS in Android settings.');
+    if (p == LocationPermission.denied)
+      p = await Geolocator.requestPermission();
+    if (p == LocationPermission.denied ||
+        p == LocationPermission.deniedForever) {
+      setStatus(
+        'Location permission denied',
+        'Allow location for Alms GPS in Android settings.',
+      );
       return false;
     }
     return true;
@@ -291,21 +357,22 @@ class _HomePageState extends State<HomePage> {
       intervalDuration: const Duration(seconds: 10),
       foregroundNotificationConfig: const ForegroundNotificationConfig(
         notificationTitle: 'Alms GPS is sharing your location',
-        notificationText: 'Open the app and tap Stop when the alms round is over.',
+        notificationText:
+            'Open the app and tap Stop when the alms round is over.',
         enableWakeLock: true,
         setOngoing: true,
       ),
     );
-    sub = Geolocator.getPositionStream(locationSettings: settings).listen(
-      (pos) {
-        lastPos = pos;
-        send(pos, false);
-      },
-      onError: (e) => setStatus('GPS problem', '$e'),
-    );
+    sub = Geolocator.getPositionStream(locationSettings: settings).listen((
+      pos,
+    ) {
+      lastPos = pos;
+      send(pos, false);
+    }, onError: (e) => setStatus('GPS problem', '$e'));
     hb = Timer.periodic(const Duration(seconds: 20), (_) {
       final p = lastPos;
-      if (p != null && DateTime.now().difference(lastSentAt) >= heartbeat) send(p, true);
+      if (p != null && DateTime.now().difference(lastSentAt) >= heartbeat)
+        send(p, true);
     });
     setState(() {});
   }
@@ -317,13 +384,19 @@ class _HomePageState extends State<HomePage> {
     final moved = lastSent == null
         ? double.infinity
         : Geolocator.distanceBetween(
-            lastSent!.latitude, lastSent!.longitude, pos.latitude, pos.longitude);
+            lastSent!.latitude,
+            lastSent!.longitude,
+            pos.latitude,
+            pos.longitude,
+          );
     if (!force && since < sendEvery && moved < minMoveM) return;
     if (!force && since < heartbeat && moved < 3) return;
 
     final z = zone;
-    final inZone = z != null &&
-        Geolocator.distanceBetween(z.lat, z.lng, pos.latitude, pos.longitude) < zoneRadiusM;
+    final inZone =
+        z != null &&
+        Geolocator.distanceBetween(z.lat, z.lng, pos.latitude, pos.longitude) <
+            zoneRadiusM;
     final Map<String, Object> data = inZone
         ? {'active': true, 'hidden': true, 'monks': monks, 'guests': walking}
         : {
@@ -339,11 +412,15 @@ class _HomePageState extends State<HomePage> {
     lastSentAt = now;
     try {
       await fb!.write(data);
-      if (!inZone) await fb!.addTrail(data['lat'] as double, data['lng'] as double);
+      if (!inZone)
+        await fb!.addTrail(data['lat'] as double, data['lng'] as double);
       final n = DateTime.now();
-      final t = '${n.hour}:${n.minute.toString().padLeft(2, '0')}:${n.second.toString().padLeft(2, '0')}';
-      setStatus(inZone ? 'Sharing, hidden (private zone)' : 'Sharing live',
-          'Last sent $t · accuracy ±${pos.accuracy.round()} m');
+      final t =
+          '${n.hour}:${n.minute.toString().padLeft(2, '0')}:${n.second.toString().padLeft(2, '0')}';
+      setStatus(
+        inZone ? 'Sharing, hidden (private zone)' : 'Sharing live',
+        'Last sent $t · accuracy ±${pos.accuracy.round()} m',
+      );
     } catch (e) {
       lastSentAt = DateTime(2000); // retry on next fix
       setStatus('Problem sending (will retry)', '$e');
@@ -362,18 +439,28 @@ class _HomePageState extends State<HomePage> {
     lastSentAt = DateTime(2000);
     setStatus('Stopping…');
     try {
-      await fb!.write({'active': false, 'monks': monks}); // lotus trail stays; map hides it after 3 hours
+      await fb!.write({
+        'active': false,
+        'monks': monks,
+      }); // lotus trail stays; map hides it after 3 hours
       setStatus('Not sharing', 'The map now shows the alms round has ended.');
     } catch (e) {
-      setStatus('Could not reach server', '$e\nThe map will time out by itself.');
+      setStatus(
+        'Could not reach server',
+        '$e\nThe map will time out by itself.',
+      );
     }
   }
 
   Future<void> setZone() async {
     if (!await ensurePermission()) return;
     final pos = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(accuracy: LocationAccuracy.high));
-    await prefs!.setString('zone', jsonEncode({'lat': pos.latitude, 'lng': pos.longitude}));
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
+    );
+    await prefs!.setString(
+      'zone',
+      jsonEncode({'lat': pos.latitude, 'lng': pos.longitude}),
+    );
     setState(() {});
   }
 
@@ -390,106 +477,184 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (fb == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    if (fb == null)
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     return Scaffold(
       appBar: AppBar(title: const Text('Alms GPS')),
       body: SafeArea(
-        child: ListView(padding: const EdgeInsets.all(16), children: [
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(status, style: Theme.of(context).textTheme.titleLarge),
-                if (detail.isNotEmpty) Padding(padding: const EdgeInsets.only(top: 4), child: Text(detail)),
-              ]),
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(status, style: Theme.of(context).textTheme.titleLarge),
+                    if (detail.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(detail),
+                      ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          if (!fb!.signedIn) ...loginForm() else ...mainControls(),
-        ]),
+            const SizedBox(height: 16),
+            if (!fb!.signedIn) ...loginForm() else ...mainControls(),
+          ],
+        ),
       ),
     );
   }
 
   List<Widget> loginForm() => [
-        const Text('Enter the password once. The phone stays signed in.'),
+    const Text('Enter the password once. The phone stays signed in.'),
+    TextField(
+      controller: emailCtl,
+      keyboardType: TextInputType.emailAddress,
+      decoration: const InputDecoration(labelText: 'Sender email'),
+    ),
+    TextField(
+      controller: passCtl,
+      obscureText: true,
+      decoration: const InputDecoration(labelText: 'Password'),
+    ),
+    const SizedBox(height: 16),
+    FilledButton(onPressed: doSignIn, child: const Text('Sign in')),
+    ExpansionTile(
+      title: const Text('Advanced'),
+      tilePadding: EdgeInsets.zero,
+      children: [
         TextField(
-            controller: emailCtl,
-            keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(labelText: 'Sender email')),
-        TextField(
-            controller: passCtl,
-            obscureText: true,
-            decoration: const InputDecoration(labelText: 'Password')),
-        const SizedBox(height: 16),
-        FilledButton(onPressed: doSignIn, child: const Text('Sign in')),
-        ExpansionTile(
-          title: const Text('Advanced'),
-          tilePadding: EdgeInsets.zero,
-          children: [
-            TextField(controller: dbCtl, decoration: const InputDecoration(labelText: 'Database URL')),
-            TextField(controller: keyCtl, decoration: const InputDecoration(labelText: 'Web API key')),
-          ],
+          controller: dbCtl,
+          decoration: const InputDecoration(labelText: 'Database URL'),
         ),
-      ];
+        TextField(
+          controller: keyCtl,
+          decoration: const InputDecoration(labelText: 'Web API key'),
+        ),
+      ],
+    ),
+  ];
 
   bool busyGuest = false;
 
   Future<void> addGuest() async {
     final nameCtl = TextEditingController();
     ImageSource? source;
-    var headShot = false;
+    var kind = 'faceless'; // faceless | full | head
     final name = await showDialog<String>(
       context: context,
-      builder: (c) => StatefulBuilder(builder: (c, setD) => AlertDialog(
-        title: const Text('Add guest monk'),
-        content: Column(mainAxisSize: MainAxisSize.min, children: [
-          TextField(
-              controller: nameCtl,
-              autofocus: true,
-              decoration: const InputDecoration(labelText: 'Name (kept on this phone only)')),
-          const SizedBox(height: 12),
-          CheckboxListTile(
-            contentPadding: EdgeInsets.zero,
-            value: headShot,
-            onChanged: (v) => setD(() => headShot = v == true),
-            title: const Text('Head shot'),
-            subtitle: Text(headShot
-                ? 'His face is put on the robed figure.'
-                : 'Full body: use a full-length standing photo.'),
+      builder: (c) => StatefulBuilder(
+        builder: (c, setD) => AlertDialog(
+          title: const Text('Add guest monk'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameCtl,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  labelText: 'Name (kept on this phone only)',
+                ),
+              ),
+              const SizedBox(height: 12),
+              SegmentedButton<String>(
+                segments: const [
+                  ButtonSegment(value: 'faceless', label: Text('Faceless')),
+                  ButtonSegment(value: 'full', label: Text('Full body')),
+                  ButtonSegment(value: 'head', label: Text('Head shot')),
+                ],
+                selected: {kind},
+                showSelectedIcon: false,
+                onSelectionChanged: (v) => setD(() => kind = v.first),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                {
+                  'faceless': 'No photo. He shows as a plain robed figure.',
+                  'full': 'Use a full-length standing photo, used as taken.',
+                  'head':
+                      'Use a head-and-shoulders photo. His face is put on the robed figure.',
+                }[kind]!,
+              ),
+              if (kind != 'faceless')
+                const Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Text(
+                    'Only with the guest monk\'s permission. The photo is shown on the public '
+                    'map only when you tick him as walking.',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ),
+            ],
           ),
-          const Text('Only with the guest monk\'s permission. The photo is shown on the public map '
-              'only when you tick him as walking.'),
-        ]),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(c), child: const Text('Cancel')),
-          TextButton(
-              onPressed: () {
-                source = ImageSource.gallery;
-                Navigator.pop(c, nameCtl.text.trim());
-              },
-              child: const Text('From gallery')),
-          FilledButton(
-              onPressed: () {
-                source = ImageSource.camera;
-                Navigator.pop(c, nameCtl.text.trim());
-              },
-              child: const Text('Take photo')),
-        ],
-      )),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(c),
+              child: const Text('Cancel'),
+            ),
+            if (kind == 'faceless')
+              FilledButton(
+                onPressed: () => Navigator.pop(c, nameCtl.text.trim()),
+                child: const Text('Add'),
+              ),
+            if (kind != 'faceless')
+              TextButton(
+                onPressed: () {
+                  source = ImageSource.gallery;
+                  Navigator.pop(c, nameCtl.text.trim());
+                },
+                child: const Text('From gallery'),
+              ),
+            if (kind != 'faceless')
+              FilledButton(
+                onPressed: () {
+                  source = ImageSource.camera;
+                  Navigator.pop(c, nameCtl.text.trim());
+                },
+                child: const Text('Take photo'),
+              ),
+          ],
+        ),
+      ),
     );
-    if (name == null || source == null) return;
-    final shot = await ImagePicker()
-        .pickImage(source: source!, maxWidth: 1200, maxHeight: 1600, imageQuality: 92);
+    if (name == null) return;
+    final headShot = kind == 'head';
+    if (kind == 'faceless') {
+      final id = 'g${DateTime.now().millisecondsSinceEpoch}';
+      await saveGuests(
+        guests..add({
+          'id': id,
+          'name': name.isEmpty ? 'Guest monk' : name,
+          'img': null,
+        }),
+      );
+      setState(() {});
+      return;
+    }
+    if (source == null) return;
+    final shot = await ImagePicker().pickImage(
+      source: source!,
+      maxWidth: 1200,
+      maxHeight: 1600,
+      imageQuality: 92,
+    );
     if (shot == null) return;
     setState(() => busyGuest = true);
     setStatus('Cutting out the photo…');
     final seg = SubjectSegmenter(
-        options: SubjectSegmenterOptions(
-            enableForegroundBitmap: true,
-            enableForegroundConfidenceMask: false,
-            enableMultipleSubjects:
-                SubjectResultOptions(enableConfidenceMask: false, enableSubjectBitmap: false)));
+      options: SubjectSegmenterOptions(
+        enableForegroundBitmap: true,
+        enableForegroundConfidenceMask: false,
+        enableMultipleSubjects: SubjectResultOptions(
+          enableConfidenceMask: false,
+          enableSubjectBitmap: false,
+        ),
+      ),
+    );
     try {
       // The first time, Google Play services downloads the cutout model; wait and retry.
       SubjectSegmentationResult? res;
@@ -498,21 +663,38 @@ class _HomePageState extends State<HomePage> {
           res = await seg.processImage(InputImage.fromFilePath(shot.path));
         } catch (e) {
           if (!'$e'.contains('to be downloaded') || attempt >= 12) rethrow;
-          setStatus('Downloading the cutout tool…', 'First time only. Please keep the app open.');
+          setStatus(
+            'Downloading the cutout tool…',
+            'First time only. Please keep the app open.',
+          );
           await Future.delayed(const Duration(seconds: 5));
         }
       }
       final fg = res.foregroundBitmap;
-      if (fg == null) throw Exception('No person found in the photo. Please try again.');
+      if (fg == null)
+        throw Exception('No person found in the photo. Please try again.');
       var im = img.decodePng(fg)!;
       im = img.trim(im, mode: img.TrimMode.transparent);
       if (headShot) im = await faceOnBody(im);
-      if (im.height > 220) im = img.copyResize(im, height: 220, interpolation: img.Interpolation.average);
+      if (im.height > 220)
+        im = img.copyResize(
+          im,
+          height: 220,
+          interpolation: img.Interpolation.average,
+        );
       final b64 = base64Encode(img.encodePng(im));
       final id = 'g${DateTime.now().millisecondsSinceEpoch}';
-      final g = guests..add({'id': id, 'name': name.isEmpty ? 'Guest monk' : name, 'img': b64});
+      final g = guests
+        ..add({
+          'id': id,
+          'name': name.isEmpty ? 'Guest monk' : name,
+          'img': b64,
+        });
       await saveGuests(g);
-      setStatus(sharing ? status : 'Not sharing', 'Guest added. Tick him when he walks with you.');
+      setStatus(
+        sharing ? status : 'Not sharing',
+        'Guest added. Tick him when he walks with you.',
+      );
     } catch (e) {
       setStatus('Could not add guest', '$e');
     } finally {
@@ -524,7 +706,7 @@ class _HomePageState extends State<HomePage> {
   // Head shot: take the top square of the cut-out (the face), make it a circle
   // and paint it over the head of the faceless robed figure.
   Future<img.Image> faceOnBody(img.Image cut) async {
-    final data = await rootBundle.load('assets/guest_body.png');
+    final data = await rootBundle.load('assets/guest_robe.png');
     return composeFace(cut, img.decodePng(data.buffer.asUint8List())!);
   }
 
@@ -533,10 +715,18 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (c) => AlertDialog(
         title: Text('Remove ${g['name']}?'),
-        content: const Text('The photo is deleted from this phone and from the website.'),
+        content: const Text(
+          'The photo is deleted from this phone and from the website.',
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(c, false), child: const Text('Cancel')),
-          FilledButton(onPressed: () => Navigator.pop(c, true), child: const Text('Remove')),
+          TextButton(
+            onPressed: () => Navigator.pop(c, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(c, true),
+            child: const Text('Remove'),
+          ),
         ],
       ),
     );
@@ -547,79 +737,137 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> guestControls() => [
-        const Divider(height: 32),
-        Text('Guest monks', style: Theme.of(context).textTheme.titleMedium),
-        const Text('Tick the guests walking today. Others in the count show as faceless figures.'),
-        for (final g in guests)
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: Image.memory(base64Decode(g['img']), height: 56, width: 24, fit: BoxFit.contain),
-            title: Text(g['name']),
-            trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-              Checkbox(
-                  value: walking.contains(g['id']), onChanged: (v) => setWalking(g['id'], v == true)),
-              IconButton(icon: const Icon(Icons.delete_outline), onPressed: () => removeGuest(g)),
-            ]),
-          ),
-        OutlinedButton.icon(
-            onPressed: busyGuest ? null : addGuest,
-            icon: const Icon(Icons.photo_camera),
-            label: Text(busyGuest ? 'Working…' : 'Add guest monk')),
-      ];
+    const Divider(height: 32),
+    Text('Guest monks', style: Theme.of(context).textTheme.titleMedium),
+    const Text(
+      'Tick the guests walking today. Others in the count show as faceless figures.',
+    ),
+    for (final g in guests)
+      ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: g['img'] == null
+            ? Image.asset(
+                'assets/guest_body.png',
+                height: 56,
+                width: 24,
+                fit: BoxFit.contain,
+              )
+            : Image.memory(
+                base64Decode(g['img']),
+                height: 56,
+                width: 24,
+                fit: BoxFit.contain,
+              ),
+        title: Text(g['name']),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Checkbox(
+              value: walking.contains(g['id']),
+              onChanged: (v) => setWalking(g['id'], v == true),
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete_outline),
+              onPressed: () => removeGuest(g),
+            ),
+          ],
+        ),
+      ),
+    OutlinedButton.icon(
+      onPressed: busyGuest ? null : addGuest,
+      icon: const Icon(Icons.photo_camera),
+      label: Text(busyGuest ? 'Working…' : 'Add guest monk'),
+    ),
+  ];
 
   List<Widget> mainControls() {
     final big = FilledButton.styleFrom(
-        minimumSize: const Size.fromHeight(72), textStyle: const TextStyle(fontSize: 22));
+      minimumSize: const Size.fromHeight(72),
+      textStyle: const TextStyle(fontSize: 22),
+    );
     return [
-      Row(children: [
-        Expanded(
-            child: Text('Monks on alms round', style: Theme.of(context).textTheme.titleMedium)),
-        IconButton.outlined(
-            onPressed: monks > 1 + walking.length ? () => setMonks(monks - 1) : null, icon: const Icon(Icons.remove)),
-        SizedBox(
+      Row(
+        children: [
+          Expanded(
+            child: Text(
+              'Monks on alms round',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          IconButton.outlined(
+            onPressed: monks > 1 + walking.length
+                ? () => setMonks(monks - 1)
+                : null,
+            icon: const Icon(Icons.remove),
+          ),
+          SizedBox(
             width: 48,
-            child: Text('$monks',
-                textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall)),
-        IconButton.outlined(
-            onPressed: monks < 20 ? () => setMonks(monks + 1) : null, icon: const Icon(Icons.add)),
-      ]),
+            child: Text(
+              '$monks',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+          ),
+          IconButton.outlined(
+            onPressed: monks < 20 ? () => setMonks(monks + 1) : null,
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
       const SizedBox(height: 12),
       sharing
           ? FilledButton(
-              style: big.copyWith(backgroundColor: const WidgetStatePropertyAll(Colors.red)),
+              style: big.copyWith(
+                backgroundColor: const WidgetStatePropertyAll(Colors.red),
+              ),
               onPressed: stop,
-              child: const Text('Stop sharing'))
+              child: const Text('Stop sharing'),
+            )
           : FilledButton(
-              style: big.copyWith(backgroundColor: WidgetStatePropertyAll(Colors.green.shade700)),
+              style: big.copyWith(
+                backgroundColor: WidgetStatePropertyAll(Colors.green.shade700),
+              ),
               onPressed: start,
-              child: const Text('Start sharing')),
+              child: const Text('Start sharing'),
+            ),
       const SizedBox(height: 12),
-      const Text('You can lock the phone while sharing. A notification stays visible until you tap Stop.'),
+      const Text(
+        'You can lock the phone while sharing. A notification stays visible until you tap Stop.',
+      ),
       ...guestControls(),
       const Divider(height: 32),
-      Text('Private zone: ${zone == null ? 'not set' : 'set (${zoneRadiusM.round()} m radius)'}',
-          style: Theme.of(context).textTheme.titleMedium),
-      const Text('Inside this zone the website shows "starting" with no location. '
-          'The zone is stored only on this phone.'),
+      Text(
+        'Private zone: ${zone == null ? 'not set' : 'set (${zoneRadiusM.round()} m radius)'}',
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      const Text(
+        'Inside this zone the website shows "starting" with no location. '
+        'The zone is stored only on this phone.',
+      ),
       const SizedBox(height: 8),
-      OutlinedButton(onPressed: sharing ? null : setZone, child: const Text('Set private zone at my current spot')),
       OutlinedButton(
-          onPressed: sharing || zone == null
-              ? null
-              : () async {
-                  await prefs!.remove('zone');
-                  setState(() {});
-                },
-          child: const Text('Remove private zone')),
+        onPressed: sharing ? null : setZone,
+        child: const Text('Set private zone at my current spot'),
+      ),
+      OutlinedButton(
+        onPressed: sharing || zone == null
+            ? null
+            : () async {
+                await prefs!.remove('zone');
+                setState(() {});
+              },
+        child: const Text('Remove private zone'),
+      ),
       const Divider(height: 32),
       TextButton(
-          onPressed: sharing
-              ? null
-              : () async {
-                  await fb!.signOut();
-                  setState(() {});
-                },
-          child: const Text('Sign out')),
+        onPressed: sharing
+            ? null
+            : () async {
+                await fb!.signOut();
+                setState(() {});
+              },
+        child: const Text('Sign out'),
+      ),
     ];
   }
 }

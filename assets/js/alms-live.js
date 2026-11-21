@@ -168,6 +168,51 @@
   var lotusLayer = L.layerGroup().addTo(map);
   var lotusIcon = L.icon({ iconUrl: '/images/lotus.svg', iconSize: [20, 16], iconAnchor: [10, 14], className: 'lotus-marker' });
 
+  // Time labels sit beside the path, never on it: try spots on both sides, moving
+  // farther out, and take the first that covers no lotus and no other label.
+  var STAMP_W = 60, STAMP_H = 19;
+  function placeStamps(screen, stamps) {
+    var boxes = [];
+    function hits(b) {
+      for (var k = 0; k < boxes.length; k++) {
+        var o = boxes[k];
+        if (b.x1 < o.x2 + 4 && b.x2 > o.x1 - 4 && b.y1 < o.y2 + 4 && b.y2 > o.y1 - 4) return 1000;
+      }
+      var n = 0, pad = 9; // lotus half-size
+      screen.forEach(function (q) {
+        if (q.x > b.x1 - pad && q.x < b.x2 + pad && q.y > b.y1 - pad && q.y < b.y2 + pad) n++;
+      });
+      return n;
+    }
+    stamps.forEach(function (st) {
+      var P = screen[st.i];
+      var a = screen[Math.max(st.i - 3, 0)], c = screen[Math.min(st.i + 3, screen.length - 1)];
+      var dx = c.x - a.x, dy = c.y - a.y, len = Math.sqrt(dx * dx + dy * dy) || 1;
+      var nx = -dy / len, ny = dx / len; // perpendicular to the direction of travel
+      var dirs = [[nx, ny], [-nx, -ny], [nx + dx / len, ny + dy / len], [-nx + dx / len, -ny + dy / len],
+        [nx - dx / len, ny - dy / len], [-nx - dx / len, -ny - dy / len]];
+      var best = null;
+      [14, 26, 42, 60].some(function (d) {
+        return dirs.some(function (u) {
+          var ul = Math.sqrt(u[0] * u[0] + u[1] * u[1]), ux = u[0] / ul, uy = u[1] / ul;
+          var cx = P.x + ux * (d + STAMP_W / 2 * Math.abs(ux)), cy = P.y + uy * (d + STAMP_H / 2 * Math.abs(uy));
+          var b = { x1: cx - STAMP_W / 2, x2: cx + STAMP_W / 2, y1: cy - STAMP_H / 2, y2: cy + STAMP_H / 2, cx: cx, cy: cy };
+          var h = hits(b);
+          if (!best || h < best.h) { best = b; best.h = h; }
+          return h === 0;
+        });
+      });
+      if (!best || best.h >= 1000) return; // nowhere free: skip this label
+      boxes.push(best);
+      var at = map.layerPointToLatLng(L.point(best.cx, best.cy));
+      L.polyline([map.layerPointToLatLng(P), at], { color: '#7a1f1f', weight: 1, opacity: 0.6, interactive: false }).addTo(lotusLayer);
+      L.marker(at, {
+        icon: L.divIcon({ className: 'alms-stamp', html: clock(st.t), iconSize: [STAMP_W, STAMP_H], iconAnchor: [STAMP_W / 2, STAMP_H / 2] }),
+        interactive: false, keyboard: false, zIndexOffset: -500
+      }).addTo(lotusLayer);
+    });
+  }
+
   function drawTrail() {
     var pts = Object.keys(trailPts).map(function (k) { return trailPts[k]; })
       .filter(function (p) { return p && typeof p.lat === 'number' && typeof p.lng === 'number' && p.t; })
@@ -176,22 +221,21 @@
     var newest = pts.length ? pts[pts.length - 1].t : 0;
     trailShown = pts.length > 0 && Date.now() - newest < TRAIL_KEEP_MS;
     if (!trailShown) return;
-    var last = null;
+    var last = null, screen = [], stamps = [];
     var nextStamp = Math.ceil(pts[0].t / STAMP_EVERY_MS) * STAMP_EVERY_MS;
-    pts.forEach(function (p) {
+    pts.forEach(function (p, i) {
       var ll = L.latLng(p.lat, p.lng);
+      var px = map.latLngToLayerPoint(ll);
+      screen.push(px);
       if (p.t >= nextStamp) {
-        L.marker(ll, {
-          icon: L.divIcon({ className: 'alms-stamp', html: clock(nextStamp), iconSize: null, iconAnchor: [-8, 8] }),
-          interactive: false, keyboard: false, zIndexOffset: -500
-        }).addTo(lotusLayer);
+        stamps.push({ i: i, t: nextStamp });
         while (nextStamp <= p.t) nextStamp += STAMP_EVERY_MS;
       }
-      var px = map.latLngToLayerPoint(ll);
       if (last && last.distanceTo(px) < LOTUS_EVERY_PX) return;
       L.marker(ll, { icon: lotusIcon, interactive: false, keyboard: false, zIndexOffset: -1000 }).addTo(lotusLayer);
       last = px;
     });
+    placeStamps(screen, stamps);
     if (!trailFitted) { // first view: show the whole trail (and the monk, if out walking)
       var b = L.latLngBounds(pts.map(function (p) { return [p.lat, p.lng]; }));
       if (marker) b.extend(marker.getLatLng());
